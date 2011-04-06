@@ -23,6 +23,8 @@ commands:
            Example: /uquest - shows all of the commands for uQuest
   reloadquests:
     description: Reloads the quests from the quests file.
+  reloadquestconfig:
+    description: Reloads the config file.
 #  test:
 #    description: test
 #    usage: |

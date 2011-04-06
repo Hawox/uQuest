@@ -1,5 +1,6 @@
 package hawox.uquest;
 
+import hawox.uquest.commands.Cmd_reloadquestconfig;
 import hawox.uquest.commands.Cmd_reloadquests;
 import hawox.uquest.commands.Cmd_uquest;
 import hawox.uquest.questclasses.LoadedQuest;
@@ -146,9 +147,12 @@ public class UQuest extends JavaPlugin {
 			//getCommand("test").setExecutor(new Cmd_test(this));
 		}
 		
-		//This command exists even if they are not using the default uQuest
+		//These commands exist even if they are not using the default uQuest
 		Cmd_reloadquests cmd_reloadquests = new Cmd_reloadquests(this);
 		getCommand("reloadquests").setExecutor(cmd_reloadquests);
+		Cmd_reloadquestconfig cmd_reloadquestconfig = new Cmd_reloadquestconfig(this);
+		getCommand("reloadquestconfig").setExecutor(cmd_reloadquestconfig);		
+		
 		
 		log = getServer().getLogger();
 		
