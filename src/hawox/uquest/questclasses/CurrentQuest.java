@@ -3,9 +3,6 @@ package hawox.uquest.questclasses;
 import hawox.uquest.UQuest;
 
 
-//omg roflolmao idjkvosld im ho brb secret message fubar snafu i love you sexy gtfo jk ily borderlands mmk omg lol
-
-
 /*    #:
  *       Name
  *       Start Info
