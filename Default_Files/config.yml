@@ -1,0 +1,46 @@
+#Change this to false if you are only using uQuest for it's API
+etc:
+    useDefaultUQuest: true
+    #The random quest rewards to give players. (This will be nested and look like reward: item: soon. I'm just trying to get this update out atm)
+    questRewards: 87,Netherrack Blocks,10~88,Soul Sand Blocks,10~89,Glowstone Blocks,10~18,Leaf Blocks,10~344,Eggs,10~348,Glowstone Dust,10
+ 
+#### Database:
+Database:
+    #Saves to flatfile when false
+    useSQLite: false
+    #(Only for flatfile)Sends a broadcast to the players when quests save.
+    broadcastSaving: true
+    #(Only for flatfile)How often to save players to flatfile.
+    SaveQuestersInfoIntervalInMinutes: 30
+
+#### PluginSupport:
+PluginSupport:
+    #The number of seconds after enabling to check for plugin linkage. Make this larger if your having issues with uQuest detecting plugins.
+    pluginTimerCheck: 5
+    #Set to true if you want to have support for multiple plugins.
+    useiConomy: true
+    usePermissions: true
+    useBOSEconomy: false
+    moneyName: Monies
+
+#### QuestLevels:
+QuestLevels:
+    #How many quests a player needs to do to level
+    questLevelInterval: 50
+    #Multiply the money rewards/amount needed for objectives
+    scaleQuestLevels: true
+
+#### Announcements:
+Announcements:
+    #Interval to broadcast a players # of quests completed
+    questAnnounceInterval: 5
+    #Interval to give players random quest reward
+    questRewardInterval: 10;
+
+
+#### QuestDropping:
+QuestDropping:
+    #How often (in minutes) a player can drop a quest. (Timer reset on server restart)
+    dropQuestInterval: 60
+    #How much money it costs to drop a quest. (Only used if a money support plugin is used
+    dropQuestCharge: 5000

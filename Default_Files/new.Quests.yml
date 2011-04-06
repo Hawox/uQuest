@@ -1,0 +1,84 @@
+0:
+  Name: First things first.
+  Start_Info: Help me get started! Make me the beginners essentials.
+  Finish_Info: Thank you very much!
+  Rewards: 
+    Money: 100
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Log Punches
+      Objective_ID: 17
+      Amount: 10
+    1:
+      Type: Gather
+      Item:
+        Item_ID: 58
+        Display_Name: Crafting Table
+        Amount: 1
+        Durability: 0
+    2:
+      Type: Gather
+      Item:
+        Item_ID: 270
+        Display_Name: Wooden Pickaxe
+        Amount: 1
+        Durability: 0
+    3:
+      Type: Gather
+      Item:
+        Item_ID: 272
+        Display_Name: Stone Sword
+        Amount: 1
+        Durability: 0
+
+1:
+  Name: Log Cabin
+  Start_Info: I'm building a log cabin. Get me some wood.
+  Finish_Info: Here's some Birch! It will be Such a flammable house... :)
+  Rewards: 
+    Money: 150
+    Item:
+      Item_ID: 17
+      Display_Name: Birch Logs
+      Amount: 2
+      Durability: 2    
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 5
+        Display_Name: Planks
+        Amount: 40
+        Durability: 0
+    1:
+      Type: Gather
+      Item:
+        Display_Name: Logs
+        Item_ID: 17
+        Amount: 10
+        Durability: 0
+2:
+  Name: Pigs everywhere!
+  Start_Info: Pigs! Kill them for their precious meat...
+  Finish_Info: Om nom nom pig flesh. Try some.
+  Rewards:
+    Money: 200
+    Item:
+      Item_ID: 319
+      Display_Name: Raw Porkchops
+      Amount: 1
+      Durability: 0
+  Objectives:
+    0:
+      Type: Kill
+      Display_Name: Pigs Slaughtered
+      Objective_ID: pig
+      Amount: 4
+    1:
+      Type: Gather
+      Item:
+        Item_ID: 319
+        Display_Name: Raw Porkchops
+        Amount: 2
+        Durability: 0

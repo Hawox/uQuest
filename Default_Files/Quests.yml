@@ -1,0 +1,757 @@
+0:
+  Name: First things first.
+  Start_Info: Help me get started! Make me the beginners essentials.
+  Finish_Info: Thank you very much!
+  Rewards: 
+    Money: 100
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Log Punches
+      Objective_ID: 17
+      Amount: 10
+    1:
+      Type: Gather
+      Item:
+        Item_ID: 58
+        Display_Name: Crafting Table
+        Amount: 1
+        Durability: 0
+    2:
+      Type: Gather
+      Item:
+        Item_ID: 270
+        Display_Name: Wooden Pickaxe
+        Amount: 1
+        Durability: 0
+    3:
+      Type: Gather
+      Item:
+        Item_ID: 272
+        Display_Name: Stone Sword
+        Amount: 1
+        Durability: 0
+1:
+  Name: Rocky
+  Start_Info: Go gather me alot of cobblestone!
+  Finish_Info: That was easy enough!
+  Rewards:
+    Money: 150
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 4
+        Display_Name: Cobblestone
+        Amount: 150
+        Durability: 0
+2:
+  Name: GetRedstone
+  Start_Info: Please gather me a bunch of redstone!
+  Finish_Info: Its electric!
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 331
+        Display_Name: Redstone
+        Amount: 25
+        Durability: 0
+3:
+  Name: DoorThief
+  Start_Info: dayls stole my doors! Craft me replacements!
+  Finish_Info: Can you hold the door open please?
+  Rewards:
+    Money: 15
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 324
+        Display_Name: Wooden Door
+        Amount: 1
+        Durability: 0
+4:
+  Name: RichMan
+  Start_Info: Please gather me some shiny diamonds!
+  Finish_Info: Now I have the diamonds!
+  Rewards:
+    Money: 10000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 264
+        Display_Name: Diamond
+        Amount: 5
+        Durability: 0
+5:
+  Name: Boom
+  Start_Info: Get me lots of gunpowder! Be careful though!
+  Finish_Info: Wow, Thanks!
+  Rewards:
+    Money: 3000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 289
+        Display_Name: Gunpowder
+        Amount: 10
+        Durability: 0
+6:
+  Name: MrCactus
+  Start_Info: Get me lots and lots of Cactus! Quickly!
+  Finish_Info: Ow, you poked me!
+  Rewards:
+    Money: 150
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 81
+        Display_Name: Cactus
+        Amount: 50
+        Durability: 0
+7:
+  Name: SwordMaker
+  Start_Info: I need to prepare myself! Make me a iron sword!
+  Finish_Info: THIS IS SPARTA!
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 267
+        Display_Name: Iron Sword
+        Amount: 1
+        Durability: 0
+8:
+  Name: Sandman
+  Start_Info: I hate the beach! Remove it, and bring me its sandy carcass!
+  Finish_Info: Sandy!
+  Rewards:
+    Money: 50
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 12
+        Display_Name: Sand
+        Amount: 25
+        Durability: 0
+9:
+  Name: Flowers
+  Start_Info: Its far too ugly around here. Bring me a bouquet of yellow flowers!
+  Finish_Info: Its pretty again!
+  Rewards:
+    Money: 250
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 37
+        Display_Name: Yellow Flower
+        Amount: 10
+        Durability: 0
+10:
+  Name: ObsidianMan
+  Start_Info: I like obsidian! Go get me a few blocks!
+  Finish_Info: Well that took forever!
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 49
+        Display_Name: Obsidian
+        Amount: 5
+        Durability: 0
+11:
+  Name: Banker
+  Start_Info: I have no space for my items! Make me lots of chests!
+  Finish_Info: Finally room for my items!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 54
+        Display_Name: Chests
+        Amount: 10
+        Durability: 0
+12:
+  Name: Disco
+  Start_Info: Im starting a disco! Get me some sound equipment!
+  Finish_Info: Nananana BATMAN! 
+  Rewards:
+    Money: 10480
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 84
+        Display_Name: Jukebox
+        Amount: 5
+        Durability: 0
+13:
+  Name: CoalMiner
+  Start_Info: I need coal for my furnace! Gimme Gimme Gimme!
+  Finish_Info: You got some coal on your face.
+  Rewards:
+    Money: 1280
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 263
+        Display_Name: Coal
+        Amount: 32
+        Durability: 0
+14:
+  Name: GoFlyaKite
+  Start_Info: I want to make a kite! Get me enough string!
+  Finish_Info: Look at it fly!!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 287
+        Display_Name: String
+        Amount: 10
+        Durability: 0
+15:
+  Name: RailRoad
+  Start_Info: Im going to make something! Make me a diamond pick!
+  Finish_Info: Oh Ive been workin on the railroad!
+  Rewards:
+    Money: 6000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 278
+        Display_Name: DiamondPickaxe
+        Amount: 1
+        Durability: 0
+16:
+  Name: CarefulNow
+  Start_Info: I dislike my neighbors, make me TnT!
+  Finish_Info: Mwuahahahah
+  Rewards:
+    Money: 6000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 46
+        Display_Name: TnT
+        Amount: 2
+        Durability: 0
+17:
+  Name: NiceAndSmooth
+  Start_Info: I need some smoothstone (rock). Gather me a mountainside!
+  Finish_Info: Oh its soo nice looking!
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 1
+        Display_Name: Rock
+        Amount: 100
+        Durability: 0
+18:
+  Name: RobinHood
+  Start_Info: I must beat robin hood! Get me a quiver full of arrows!
+  Finish_Info: Oh its soo nice looking!
+  Rewards:
+    Money: 200
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 262
+        Display_Name: Arrow
+        Amount: 50
+        Durability: 0
+19:
+  Name: Fire
+  Start_Info: I need flint to do..uh something.. Get me some!
+  Finish_Info: If anyone asks, You never gave me this.
+  Rewards:
+    Money: 250
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 318
+        Display_Name: Flint
+        Amount: 10
+        Durability: 0
+20:
+  Name: NiceAndLeafy
+  Start_Info: I need to give back, get me saplings.
+  Finish_Info: Trees galore!
+  Rewards:
+    Money: 200
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 6
+        Display_Name: Sapling
+        Amount: 25
+        Durability: 0
+21:
+  Name: Bricky
+  Start_Info: Dont hate me, but I need all of your brick blocks.
+  Finish_Info: I love you.
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 45
+        Display_Name: Brick
+        Amount: 5
+        Durability: 0
+22:
+  Name: Sailing
+  Start_Info: Im planning a trip! Make me a fleet of boats!
+  Finish_Info: Ill sail into the sunset!
+  Rewards:
+    Money: 40
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 333
+        Display_Name: Boat
+        Amount: 2
+        Durability: 0
+23:
+  Name: Essay
+  Start_Info: I need to write an essay! Get me a ream of paper!
+  Finish_Info: Now where is my pen?
+  Rewards:
+    Money: 50
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 339
+        Display_Name: Paper
+        Amount: 64
+        Durability: 0
+24:
+  Name: KittyKitty
+  Start_Info: My kitty is hungry! Make it some Cooked fish!
+  Finish_Info: Good Kitty!
+  Rewards:
+    Money: 350
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 350
+        Display_Name: Cooked Fish
+        Amount: 2
+        Durability: 0
+25:
+  Name: DirtForMe
+  Start_Info: Im making something special. Get me Dirt!
+  Finish_Info: Youre looking kinda.. Dirty.
+  Rewards:
+    Money: 200
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 3
+        Display_Name: Dirt
+        Amount: 128
+        Durability: 0
+26:
+  Name: Nightlife
+  Start_Info: Im scared of the dark! Make me Torches
+  Finish_Info: Yay, No more mob spawning here!
+  Rewards:
+    Money: 300
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 50
+        Display_Name: Torch
+        Amount: 28
+        Durability: 0
+27:
+  Name: WhatDidYouSay
+  Start_Info: I have some farming to do, get me some stone hoes.
+  Finish_Info: Thanks for the stone hard hoe!
+  Rewards:
+    Money: 25
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 291
+        Display_Name: Stone Hoe
+        Amount: 2
+        Durability: 0
+28:
+  Name: Seedin
+  Start_Info: I need seeds for my crops! Get me lots of seeds!
+  Finish_Info: Time for wheat!
+  Rewards:
+    Money: 250
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 295
+        Display_Name: Seeds
+        Amount: 10
+        Durability: 0
+29:
+  Name: Naked
+  Start_Info: I seem to have misplaced.. my pants, fetch leather pants.
+  Finish_Info: Hurrah! Pantless no more!
+  Rewards:
+    Money: 50
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 300
+        Display_Name: Leather Pants
+        Amount: 1
+        Durability: 0
+30:
+  Name: Smelter
+  Start_Info: I need Lava Buckets for smelting!
+  Finish_Info: Thanks you should be using these to smelt as well!
+  Rewards:
+    Money: 3100
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 327
+        Display_Name: Lava Bucket
+        Amount: 2
+        Durability: 0
+31:
+  Name: PunchWood
+  Start_Info: This is minecraft. Punch wood.
+  Finish_Info: Fists of steel!
+  Rewards:
+    Money: 100
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Wood Damage
+      Objective_ID: 17
+      Amount: 5000
+32:
+  Name: Replant
+  Start_Info: Help the world! Plant saplings!
+  Finish_Info: Your reward is knowing you did a good deed.
+  Rewards:
+    Money: 1
+  Objectives:
+    0:
+      Type: Block_Place
+      Display_Name: Saplings Planted
+      Objective_ID: 6
+      Amount: 30
+33:
+  Name: Its Too Dark!
+  Start_Info: Monsters are spawning everywhere! Place torches!
+  Finish_Info: I can build in peace now <3
+  Rewards:
+    Money: 101
+  Objectives:
+    0:
+      Type: Block_Place
+      Display_Name: Torches Placed
+      Objective_ID: 50
+      Amount: 100
+34:
+  Name: Death to leaves!
+  Start_Info: I cant see the sun! Clear some leaves for me!
+  Finish_Info: Still too many D=
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Block_Destroy
+      Display_Name: Leaves Destroyed
+      Objective_ID: 18
+      Amount: 100
+35:
+  Name: PunchLevers!
+  Start_Info: Switchs are fun! Punch them!
+  Finish_Info: Fun stuff!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Levers Punched
+      Objective_ID: 69
+      Amount: 200
+36:
+  Name: Windows
+  Start_Info: Install glass because I said so.
+  Finish_Info: o_O
+  Rewards:
+    Money: 50
+  Objectives:
+    0:
+      Type: Block_Place
+      Display_Name: Glass Placed
+      Objective_ID: 20
+      Amount: 20
+37:
+  Name: DigDug
+  Start_Info: Punch grass, but dont break it! I like the noise!
+  Finish_Info: Thanks!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Grass Damage
+      Objective_ID: 2
+      Amount: 5000
+38:
+  Name: DugDig
+  Start_Info: Punch dirt, but dont break it! I like the noise!
+  Finish_Info: Thanks!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Dirt Damage
+      Objective_ID: 3
+      Amount: 5000
+39:
+  Name: SandRenovation
+  Start_Info: Destory the sand!
+  Finish_Info: Theres still so much sand... T.T
+  Rewards:
+    Money: 400
+  Objectives:
+    0:
+      Type: Block_Destroy
+      Display_Name: Sand Destroyed
+      Objective_ID: 12
+      Amount: 150
+40:
+  Name: TrapMaster
+  Start_Info: My neighbors keep stepping on my flowers, please make me a few dispensers!
+  Finish_Info: Prepare to battle neighbors!
+  Rewards:
+    Money: 1500
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 23
+        Display_Name: Dispenser
+        Amount: 2
+        Durability: 0
+41:
+  Name: Addiction
+  Start_Info: I need sugar, just a little, can you spare some sugar.. PLEASE!
+  Finish_Info: Yes! More! More!
+  Rewards:
+    Money: 200
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 353
+        Display_Name: Sugar
+        Amount: 128
+        Durability: 0
+42:
+  Name: Painter
+  Start_Info: I want to paint the world! Please get me some dye!
+  Finish_Info: It will be so pretty!
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 351
+        Display_Name: Dyes
+        Amount: 5
+        Durability: 0
+43:
+  Name: Museum
+  Start_Info: I need more bones for my museum, please collect some for me.
+  Finish_Info: Hmm, I think I might need more
+  Rewards:
+    Money: 500
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 352
+        Display_Name: Bones
+        Amount: 5
+        Durability: 0
+44:
+  Name: Play That Funky Music
+  Start_Info: Hit The Music Boxes!
+  Finish_Info: You were a little flat.
+  Rewards:
+    Money: 100
+  Objectives:
+    0:
+      Type: Block_Damage
+      Display_Name: Notes Played
+      Objective_ID: 25
+      Amount: 2000
+45:
+  Name: Creeper Victim
+  Start_Info: Half a heart left... Help... Me...
+  Finish_Info: Omnomnom! Thanks! You can keep some!
+  Rewards:
+    Money: 150
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 320
+        Display_Name: Warm Meat
+        Amount: 2
+        Durability: 0
+46:
+  Name: Swordsman
+  Start_Info: Make me some stone swords.
+  Finish_Info: Thanks! I needed this for... monster slaying. sure...
+  Rewards:
+    Money: 25
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 272
+        Display_Name: Stone Swords
+        Amount: 1
+        Durability: 0
+47:
+  Name: Slaughter House
+  Start_Info: Go Kill pigs!
+  Finish_Info: Death to pigs!!!
+  Rewards:
+    Money: 50
+  Objectives:
+    0:
+      Type: Kill
+      Display_Name: Pigs Killed
+      Objective_ID: pig
+      Amount: 5
+48:
+  Name: Crawlies
+  Start_Info: Spiders are creepy!
+  Finish_Info: Creepy crawlies everywhere!
+  Rewards:
+    Money: 200
+  Objectives:
+    0:
+      Type: Kill
+      Display_Name: Spiders Killed
+      Objective_ID: spider
+      Amount: 2
+49:
+  Name: SSSSssss
+  Start_Info: Creepers blew up my house!
+  Finish_Info: How many times did they get you?
+  Rewards:
+    Money: 1000
+  Objectives:
+    0:
+      Type: Kill
+      Display_Name: Creepers Killed
+      Objective_ID: creeper
+      Amount: 3
+50:
+  Name: Get Wood
+  Start_Info: Go gather me a few planks please!
+  Finish_Info: Thank you very much!
+  Rewards:
+    Money: 20
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 5
+        Display_Name: Planks
+        Amount: 40
+        Durability: 0
+51:
+  Name: Log Cabin
+  Start_Info: I'm building a log cabin. Get me some wood.
+  Finish_Info: Here's some Birch! It will be Such a flammable house... :)
+  Rewards: 
+    Money: 150
+    Item:
+      Item_ID: 17
+      Display_Name: Birch Logs
+      Amount: 2
+      Durability: 2    
+  Objectives:
+    0:
+      Type: Gather
+      Item:
+        Item_ID: 5
+        Display_Name: Planks
+        Amount: 40
+        Durability: 0
+    1:
+      Type: Gather
+      Item:
+        Display_Name: Logs
+        Item_ID: 17
+        Amount: 10
+        Durability: 0
+52:
+  Name: Pigs everywhere!
+  Start_Info: Pigs! Kill them for their precious meat...
+  Finish_Info: Om nom nom pig flesh. Try some.
+  Rewards:
+    Money: 200
+    Item:
+      Item_ID: 319
+      Display_Name: Raw Porkchops
+      Amount: 1
+      Durability: 0
+  Objectives:
+    0:
+      Type: Kill
+      Display_Name: Pigs Slaughtered
+      Objective_ID: pig
+      Amount: 4
+    1:
+      Type: Gather
+      Item:
+        Item_ID: 319
+        Display_Name: Raw Porkchops
+        Amount: 2
+        Durability: 0

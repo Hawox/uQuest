@@ -1,0 +1,31 @@
+name: Hawox's uQuest
+main: hawox.uquest.UQuest
+version: 1.03
+author: Hawox
+description: >
+             Lightweight but heavily customizable quest plugin.
+             Gets quests anywhere with a simple /uquest
+commands:
+  uquest:
+    description: All the quests commands
+    usage: |
+           /<command>
+           Example: /uquest - shows all of the commands for uQuest
+  quest:
+    description: All the quests commands (shorter)
+    usage: |
+           /<command>
+           Example: /uquest - shows all of the commands for uQuest
+  q:
+    description: All the quests commands (shortest)
+    usage: |
+           /<command>
+           Example: /uquest - shows all of the commands for uQuest
+  reloadquests:
+    description: Reloads the quests from the quests file.
+#  test:
+#    description: test
+#    usage: |
+#           /<command>
+#           Example: test
+           
