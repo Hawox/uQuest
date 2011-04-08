@@ -109,6 +109,7 @@ public class UQuest extends JavaPlugin {
 	
 	ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();
 	ArrayList<String> mobsKilled = new ArrayList<String>();
+	private ScheduledThreadPoolExecutor mobList_Timer = new ScheduledThreadPoolExecutor(50);
 	
 	//create our general quest interaction methods
 	QuestInteraction questInteraction = new QuestInteraction(this);
@@ -880,6 +881,14 @@ public class UQuest extends JavaPlugin {
 
 	public PluginDescriptionFile getPdfFile() {
 		return pdfFile;
+	}
+
+	public ScheduledThreadPoolExecutor getMobList_Timer() {
+		return mobList_Timer;
+	}
+
+	public void setMobList_Timer(ScheduledThreadPoolExecutor mobList_Timer) {
+		this.mobList_Timer = mobList_Timer;
 	}
     
     
