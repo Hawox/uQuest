@@ -69,20 +69,20 @@ public class QuestLoader {
 	
 	public void test(){
 		
-		System.out.println("Below me.\n");
-		System.out.println(y.dump(allQuests));
-		System.out.println("Above me.\n");
+//		System.out.println("Below me.\n");
+//		System.out.println(y.dump(allQuests));
+//		System.out.println("Above me.\n");
 		
-		System.out.println("Below me.\n");
-		System.out.println(y.dump(allQuests.get("0")));
-		System.out.println("Above me.\n");
+//		System.out.println("Below me.\n");
+//		System.out.println(y.dump(allQuests.get("0")));
+//		System.out.println("Above me.\n");
 		
 		//Map<String,Object> map = (LinkedHashMap<String,Object>) y.load(reader);
 		//YamlQuest quest = this.getYamlQuestFromHashMap((HashMap<Object,Object>)y.load(reader));
-		System.out.println("Below me.\n");
-		HashMap<Object, Object> map = (HashMap<Object, Object>) allQuests.get(0);
-		System.out.println(y.dump(getYamlQuestFromHashMap(map)));
-		System.out.println("Above me.\n");
+//		System.out.println("Below me.\n");
+//		HashMap<Object, Object> map = (HashMap<Object, Object>) allQuests.get(0);
+//		System.out.println(y.dump(getYamlQuestFromHashMap(map)));
+//		System.out.println("Above me.\n");
 		
 		
 		/*
@@ -122,7 +122,7 @@ public class QuestLoader {
 			//For testing
 			//System.out.println(y.dump(getYamlQuestFromHashMap(map)));
 			
-			returnMe.add(new LoadedQuest(getYamlQuestFromHashMap(map)));
+			returnMe.add(new LoadedQuest(getYamlQuestFromHashMap(i,map)));
 		}
 		
 		return returnMe;
@@ -261,19 +261,19 @@ public class QuestLoader {
 	/*
 	 * A bunch of methods to convert the data gotten from a HashMap<Object,Object> to ymlClasses
 	 */
-	public YamlQuest getYamlQuestFromHashMap(HashMap<Object,Object> map){
+	public YamlQuest getYamlQuestFromHashMap(int questNumber, HashMap<Object,Object> map){
 			HashMap<String,Object> rewardsMap = (HashMap<String,Object>)map.get("Rewards");
-			HashSet<ymlReward> ymlRewards = getymlRewardsFromHashMap(rewardsMap);
+			HashSet<ymlReward> ymlRewards = getymlRewardsFromHashMap(questNumber,rewardsMap);
 			
 			HashMap<Object,Object> objectivesMap = (HashMap<Object,Object>)map.get("Objectives");
-			HashSet<Objective> objectives = getymlObjectivesFromHashMap(objectivesMap);
+			HashSet<Objective> objectives = getymlObjectivesFromHashMap(questNumber,objectivesMap);
 			
 			
 		YamlQuest returnMe = new YamlQuest(map.get("Name"), map.get("Start_Info"), map.get("Finish_Info"), ymlRewards, objectives);
 		return returnMe;
 	}
 	
-	public HashSet<ymlReward> getymlRewardsFromHashMap(HashMap<String,Object> map){
+	public HashSet<ymlReward> getymlRewardsFromHashMap(int questNumber, HashMap<String,Object> map){
 		//Since there can be different types of the same reward as well as an undefined amount of them... iterate
 		HashSet<ymlReward> returnMe = new HashSet<ymlReward>();
 				
@@ -291,13 +291,13 @@ public class QuestLoader {
 		    	HashMap<String,Object> itemInfo = (HashMap<String, Object>) value;
 		    	returnMe.add(getymlItemFromHashMap(itemInfo));
 		    }else{
-		    	System.err.println("[Hawox's uQuest]:QuestLoader | Error loading a reward!\n      -> " + key + " " + value);
+		    	questLoadError(questNumber, "Unknown reward format:\n Key:" + key + " | Value:" + value);
 		    }
 		}
 		return returnMe;
 	}
 	
-	public HashSet<Objective> getymlObjectivesFromHashMap(HashMap<Object,Object> map){
+	public HashSet<Objective> getymlObjectivesFromHashMap(int questNumber, HashMap<Object,Object> map){
 		HashSet<Objective> returnMe = new HashSet<Objective>();
 		for (Entry<Object, Object> entry : map.entrySet()) {
 			//Should be a string if their list is setup correctly
@@ -326,39 +326,74 @@ public class QuestLoader {
 	    			ymlReward item = getymlItemFromHashMap(itemInfo);
 		    		try{
 		    			returnMe.add(new Objective("gather", item.Display_Name, item.toItem(), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
-		    		}catch(NullPointerException npe){ returnMe.add(new Objective("gather", item.Display_Name, item.toItem(), null, null)); }
+		    		}catch(NullPointerException npe){ 
+		    			try{
+		    				returnMe.add(new Objective("gather", item.Display_Name, item.toItem(), null, null));
+		    			}catch(NullPointerException npe2){
+		    				//player did not format their quest correctly at this point.
+		    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+		    			}
+		    		}
 
 		    	}else
 		    	
 		    	if(type.equalsIgnoreCase("Block_Destroy")){
 		    		try{
 		    			returnMe.add(new Objective("blockdestroy", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
-		    		}catch(NullPointerException npe){ returnMe.add(new Objective("blockdestroy", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null)); }
+		    		}catch(NullPointerException npe){
+		    			try{
+		    				returnMe.add(new Objective("blockdestroy", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null));
+		    			}catch(NullPointerException npe2){
+		    				//player did not format their quest correctly at this point.
+		    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+		    			}
+		    		}
 		    	}else
 		    	
 		    	if(type.equalsIgnoreCase("Block_Damage")){
 			  		try{
 			  			returnMe.add(new Objective("blockdamage", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
-			  		}catch(NullPointerException npe){ returnMe.add(new Objective("blockdamage", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null));}
+			  		}catch(NullPointerException npe){
+			  			try{
+			  				returnMe.add(new Objective("blockdamage", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null));
+			  			}catch(NullPointerException npe2){
+		    				//player did not format their quest correctly at this point.
+		    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+		    			}
+			  		}
 				}else
 				
 				if(type.equalsIgnoreCase("Block_Place")){
 			  		try{
 			  			returnMe.add(new Objective("blockplace", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
-			  		}catch(NullPointerException npe){ returnMe.add(new Objective("blockplace", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null));}
+			  		}catch(NullPointerException npe){
+			  			try{
+			  				returnMe.add(new Objective("blockplace", (String)moreInfo.get("Display_Name"), Integer.toString((Integer)moreInfo.get("Objective_ID")), (Integer)moreInfo.get("Amount"), null, null));
+			  			}catch(NullPointerException npe2){
+		    				//player did not format their quest correctly at this point.
+		    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+		    			}
+			  		}
 
 				}else
 				
 				if(type.equalsIgnoreCase("Kill")){
 			  		try{
 			  			returnMe.add(new Objective("kill", (String)moreInfo.get("Display_Name"), (String)moreInfo.get("Objective_ID"), (Integer)moreInfo.get("Amount"), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
-			  		}catch(NullPointerException npe){ returnMe.add(new Objective("kill", (String)moreInfo.get("Display_Name"), (String)moreInfo.get("Objective_ID"), (Integer)moreInfo.get("Amount"), null, null));}
+			  		}catch(NullPointerException npe){
+			  			try{
+			  				returnMe.add(new Objective("kill", (String)moreInfo.get("Display_Name"), (String)moreInfo.get("Objective_ID"), (Integer)moreInfo.get("Amount"), null, null));
+			  				}catch(NullPointerException npe2){
+			    				//player did not format their quest correctly at this point.
+			    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+			    			}
+			  		}
 
 				}else{
-				    System.err.println("\n\n[Hawox's uQuest]:QuestLoader | Error loading an Objective type!\n      -> " + key + " " + value);
+					questLoadError(questNumber, "Unknown Objective:\n Type:" + type + " \n Value:" + value);
 		    	}
 		    }while(false);
-		    if(type == null){ System.err.println("\n\n[Hawox's uQuest]:QuestLoader | Error loading an Objective type!\n      -> " + key + " " + value); }
+		    if(type == null){ questLoadError(questNumber, "Got a null quest type. Huge formating error!!! >:C"); }
 		}
 		    
 		return returnMe;
@@ -369,7 +404,7 @@ public class QuestLoader {
 		try{
 			return(new ymlReward( Integer.toString((Integer) itemInfo.get("Item_ID")), (String)itemInfo.get("Display_Name"), Integer.toString((Integer) itemInfo.get("Amount")), Integer.toString((Integer) itemInfo.get("Durability")) ) );
 		}catch(NullPointerException npe){
-			System.err.println("[Hawox's uQuest] Error loading item reward!!! Did you include all fields and capitalize everything?");
+			questLoadError("Error loading item reward!!! Did you include all fields and capitalize everything?");
 			return null;
 		}
 	}
@@ -380,4 +415,27 @@ public class QuestLoader {
 			return(new ymlLocation( (HashMap<String,Object>)locationInfo.get("Point"),(HashMap<String,Object>)locationInfo.get("Give_Range") ) );
 		}catch(NullPointerException npe){ return null; }
 }
+	
+	public void questLoadError(String error){
+		String theText = "\n\n";
+		theText += "-----------------------\n";
+		theText += "[uQuest]\n";
+		theText += "Error loading quest number: unknown \n";
+		theText += "Problem:\n";
+		theText += error + "\n";
+		theText += "-----------------------\n\n";
+		System.err.println(theText);
+	}
+	
+	public void questLoadError(int number, String error){
+		String theText = "\n\n";
+		theText += "-----------------------\n";
+		theText += "[uQuest]\n";
+		theText += "Error loading quest number: " + Integer.toString(number) + "\n";
+		theText += "Problem:\n";
+		theText += error + "\n";
+		theText += "-----------------------\n\n";
+		System.err.println(theText);
+	}
+	
 }
