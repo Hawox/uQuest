@@ -131,8 +131,9 @@ public class UQuest extends JavaPlugin {
 		//load up our files if they don't exist
 		moveFiles();
 		
-		questPlayerStorage = new iProperty("plugins/uQuest/uQuest_Players.txt");
-		
+		try{
+			questPlayerStorage = new iProperty("plugins/uQuest/uQuest_Players.txt");
+		}catch(NullPointerException npe){/*Do nothing*/}
 		//Check if we need to convert old uQuest v1 quests
 		if(new File("plugins/uQuest/uQuest_Quests.txt").exists())
 			new QuestConverter();
