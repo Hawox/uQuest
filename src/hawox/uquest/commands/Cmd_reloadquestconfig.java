@@ -29,8 +29,14 @@ public class Cmd_reloadquestconfig implements CommandExecutor{
 
 		if(player != null){
 			if(plugin.isUsePermissions() == true){
+				try{
 				if(UQuest.Permissions.has(player, "uQuest.CanReloadQuestConfig")){
 					process = true;
+				}
+				}catch(NoClassDefFoundError ncdfe){
+					//they don't have permissions so disable it plugin wide
+					plugin.setUsePermissions(false);
+					System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
 				}
 			}//Ops can use it too! Just in case we're not using permissions.
 			if(player.isOp()){
@@ -42,13 +48,13 @@ public class Cmd_reloadquestconfig implements CommandExecutor{
 		if(process == true){
 			plugin.readConfig();
 			
-			sender.sendMessage("[" + plugin.getPdfFile().getName() + "] I hope you didn't change anything under 'Database' or 'PluginSupport'!!!");
-			sender.sendMessage("[" + plugin.getPdfFile().getName() + "] These will not reconfigure mid runtime and may cause UNDESIRED RESULTS!!!");
+			sender.sendMessage(plugin.pluginNameBracket() + " I hope you didn't change anything under 'Database' or 'PluginSupport'!!!");
+			sender.sendMessage(plugin.pluginNameBracket() + " These will not reconfigure mid runtime and may cause UNDESIRED RESULTS!!!");
 			
-			sender.sendMessage("[" + plugin.getPdfFile().getName() + "] uQuest's config has been reloaded.");
+			sender.sendMessage(plugin.pluginNameBracket() + " uQuest's config has been reloaded.");
 			
 			if(player != null){
-				System.out.println("[" + plugin.getPdfFile().getName() + "] " + player.getName() + " reloaded uQuest's config.");
+				System.out.println(plugin.pluginNameBracket() + " " + player.getName() + " reloaded uQuest's config.");
 			}
 	    }else{
 	    	player.sendMessage(ChatColor.RED + "You don't have permission to use that!");

@@ -29,8 +29,14 @@ public class Cmd_reloadquests implements CommandExecutor{
 
 		if(player != null){
 			if(plugin.isUsePermissions() == true){
+				try{
 				if(UQuest.Permissions.has(player, "uQuest.CanReloadQuests")){
 					process = true;
+				}
+				}catch(NoClassDefFoundError ncdfe){
+					//they don't have permissions so disable it plugin wide
+					plugin.setUsePermissions(false);
+					System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
 				}
 			}//Ops can use it too! Just incase we;re not unsing permissions.
 			if(player.isOp()){
@@ -44,12 +50,12 @@ public class Cmd_reloadquests implements CommandExecutor{
 			plugin.theQuestsLoadAllIntoArray();
 			int questsAfter = plugin.getQuestInteraction().getQuestTotal();
 			
-			sender.sendMessage("[" + plugin.getPdfFile().getName() + "] uQuest's quest list has been reloaded.");
-			sender.sendMessage("[" + plugin.getPdfFile().getName() + "] Total before: " + Integer.toString(questsBefore) + " | Total After: " + Integer.toString(questsAfter) );
+			sender.sendMessage(plugin.pluginNameBracket() + " uQuest's quest list has been reloaded.");
+			sender.sendMessage(plugin.pluginNameBracket() + " Total before: " + Integer.toString(questsBefore) + " | Total After: " + Integer.toString(questsAfter) );
 			
 			if(player != null){
-				System.out.println("[" + plugin.getPdfFile().getName() + "] " + player.getName() + " reloaded uQuest's quests.");
-				System.out.println("[" + plugin.getPdfFile().getName() + "] Total before: " + Integer.toString(questsBefore) + " | Total After: " + Integer.toString(questsAfter) );
+				System.out.println(plugin.pluginNameBracket() + " " + player.getName() + " reloaded uQuest's quests.");
+				System.out.println(plugin.pluginNameBracket() + " Total before: " + Integer.toString(questsBefore) + " | Total After: " + Integer.toString(questsAfter) );
 			}
 	    }else{
 	    	player.sendMessage(ChatColor.RED + "You don't have permission to use that!");

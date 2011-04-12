@@ -23,7 +23,7 @@ public class UQuestPlayerListener extends PlayerListener {
     		if(plugin.getDB().get(player.getName()) == null){
     			//They are not in the DB so add them as a quester!
     			plugin.getDB().put(player.getName(), new Quester(plugin.getQuestDefaultPlayer().split(":"), player));
-    			System.out.println("[" + plugin.getPdfFile().getName() + "] Player added to SQLite DB! : " + player.getName());
+    			System.out.println(plugin.pluginNameBracket() + " Player added to SQLite DB! : " + player.getName());
     		}
     	}else{
     		plugin.placePlayerIntoList(player);

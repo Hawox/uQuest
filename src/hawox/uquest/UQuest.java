@@ -120,7 +120,7 @@ public class UQuest extends JavaPlugin {
 		// worry about them
 		if(!(this.isUseSQLite()))
 			saveQuesterListToFile();
-		System.out.println("[" + this.getPdfFile().getName() + "] disabled!");
+		System.out.println(pluginNameBracket() + " disabled!");
 		// System.out.println( pdfFile.getName() + " version " +
 		// pdfFile.getVersion() + " is disabled!" );
 	}
@@ -180,21 +180,21 @@ public class UQuest extends JavaPlugin {
 		//Get the DB fired up
 		if(isUseSQLite() == true){
 			this.setDB(new SqLiteKeyValStor<Quester>("questers", "plugins/uQuest/uQuestQuesters"));
-			System.out.println("[" + this.getPdfFile().getName() + "] Loaded with SQLite!");
+			System.out.println(pluginNameBracket() + " Loaded with SQLite!");
 		}
 		
 		// start the player saving timer
 		if (firstLoad == true && isUseSQLite() == false) {
 			timerSavePlayers();
 			firstLoad = false;
-			System.out.println("[" + this.getPdfFile().getName() + "] Loaded with Flatfile!");
+			System.out.println(pluginNameBracket() + " Loaded with Flatfile!");
 		}
 		
 		// Runs everytime the plugin is enabled. Always register the events
 		// here! (I placed them in a custom method to make it easier to read!)
 		registerEvents();
 
-		System.out.println("[" + this.getPdfFile().getName() + "] v" + this.getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
+		System.out.println(pluginNameBracket() + " v" + this.getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
 		// System.out.println( pdfFile.getName() + " version " +
 		// pdfFile.getVersion() + " is enabled!" );
 		
@@ -223,7 +223,7 @@ public class UQuest extends JavaPlugin {
 			if (test != null) {
 				Permissions = ((Permissions) test).getHandler();
 			} else {
-				System.out.println("[" + this.getPdfFile().getName() + "] Permission system not enabled. Disabling permission support.");
+				System.out.println(pluginNameBracket() + " Permission system not enabled. Disabling permission support.");
 				setUsePermissions(false);
 			}
 		}
@@ -244,7 +244,7 @@ public class UQuest extends JavaPlugin {
 		        //iConomy iC = (iConomy)test;
 		        //currency = iConomy.currency;
 		      } else {
-		        log.log(Level.SEVERE, "[" + this.getPdfFile().getName() + "] iConomy is not loaded. Turning iConomy support off.");
+		        log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
 		        useiConomy = false;
 		      }
 	    
@@ -266,7 +266,7 @@ public class UQuest extends JavaPlugin {
 		      if (temp != null) {
 		    	  theBOSEconomy = (BOSEconomy)temp;
 		      } else {
-		        log.log(Level.SEVERE, "[" + this.getPdfFile().getName() + "] iConomy is not loaded. Turning iConomy support off.");
+		        log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
 		        useiConomy = false;
 		      }
 	}
@@ -317,7 +317,7 @@ public class UQuest extends JavaPlugin {
 		            output.write(buf, 0, length);
 		          }
 
-		          System.out.println("[" + this.getPdfFile().getName() + "] Default file written: " + name);
+		          System.out.println(pluginNameBracket() + " Default file written: " + name);
 		        } catch (Exception e) {
 		          e.printStackTrace();
 		        } finally {
@@ -381,8 +381,8 @@ public class UQuest extends JavaPlugin {
 					rewards[2] = rewards[2];
 				}
 			} catch (ArrayIndexOutOfBoundsException aiobe) {
-				log.log(Level.SEVERE, "[" + this.getPdfFile().getName() + "] Error setting up quest rewards! Fix the config file!");
-				log.log(Level.SEVERE, "[" + this.getPdfFile().getName() + "] Quest item rewards are loaded as defaults!");
+				log.log(Level.SEVERE, pluginNameBracket() + " Error setting up quest rewards! Fix the config file!");
+				log.log(Level.SEVERE, pluginNameBracket() + " Quest item rewards are loaded as defaults!");
 				setQuestRewards(questRewards);
 			}
 
@@ -648,6 +648,9 @@ public class UQuest extends JavaPlugin {
 
 	
 
+	public String pluginNameBracket(){
+		return ("[" + this.getPdfFile().getName() + "]");
+	}
 	
 
 	public ArrayList<Quester> getTheQuesterList() {

@@ -122,7 +122,7 @@ final public class QuestInteraction {
 				player.getInventory().addItem(new ItemStack(Integer.parseInt(rewards[0]), Integer.parseInt(rewards[2])));
 				plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + rewards[2] + " " + rewards[1] + ChatColor.YELLOW + "!");
 			}catch(NumberFormatException nfe){
-					plugin.log.log(Level.SEVERE, "[" + plugin.getPdfFile().getName() + "] Invalid quest reward item ID! Giving them dirt by default!");
+					plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Invalid quest reward item ID! Giving them dirt by default!");
 					plugin.getServer().broadcastMessage(ChatColor.RED + "There was an invalid item ID in the quest rewards config! so you get 10 dirt!");
 					player.getInventory().addItem(new ItemStack(Material.DIRT, 10));
 					plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + "10 Dirt" + ChatColor.YELLOW + "!");

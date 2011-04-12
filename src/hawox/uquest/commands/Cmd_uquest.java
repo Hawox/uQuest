@@ -25,13 +25,14 @@ public class Cmd_uquest implements CommandExecutor{
 		if(sender instanceof Player){
 			player = (Player)sender;
 			}else{
-				sender.sendMessage("[Hawox's uQuest] This is not ment for console use silly!");
+				sender.sendMessage(plugin.pluginNameBracket() + " This is not ment for console use silly!");
 				return true;
 			}
 		//should make this a place at this point
 		
 		boolean processQuest = false;
 		
+		try{
 		if(plugin.isUsePermissions() == true){
 			if(UQuest.Permissions.has(player, "uQuest.CanQuest")){
 				processQuest = true;
@@ -39,6 +40,12 @@ public class Cmd_uquest implements CommandExecutor{
 		}else{
 			//no permission support so we let everyone use it!
 			processQuest = true;
+		}
+		}catch(NoClassDefFoundError ncdfe){
+			processQuest = true;
+			//they don't have permissions so disable it plugin wide
+			plugin.setUsePermissions(false);
+			System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
 		}
 		
 		if(processQuest == true){
