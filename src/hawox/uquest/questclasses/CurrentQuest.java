@@ -25,33 +25,18 @@ public class CurrentQuest extends LoadedQuest{
 		this.finishInfo = theQuest.getFinishInfo();
 		this.rewards = theQuest.getRewards();
 		this.objectives = theQuest.getObjectives();
-		// TODO Auto-generated constructor stub
+		this.changeQuestLevel(level);
+	}
+	
+	public void changeQuestLevel(int level){
+		//to account for starting at level 0
+		level += 1;
+		for(Reward reward : this.rewards){
+			reward.scaleMoneyReward(level);
+		}
+		for(Objective objective : this.objectives){
+			objective.scaleToLevel(level);
+		}
 	}
 
-
-	
-	/*public CurrentQuest(final UQuest plugin, LoadedQuest theQuest, int level) {
-		this.plugin = plugin;
-		
-		this.name = theQuest.name;
-		this.finishInfo = theQuest.finishInfo;
-
-    }*/
-	
-
-	
-	/* TODO
-	public void changeQuestLevel(int level){
-			//to account for starting at level 0
-			level += 1;
-			this.amountNeeded *= level;
-			this.amountToConsume *= level;
-			this.moneyReward *= level;
-			this.expToGive *= level;
-			this.classToGiveItTo *= level;
-	}*/
-	
-	
-	//Getters and Setters
-	
 }

@@ -56,6 +56,9 @@ public class Objective {
 			removeItem(player, this.itemNeeded.getTypeId(), this.amountNeeded);
 	}
 
+	public void scaleToLevel(int factor){
+		this.setAmountNeeded(factor * this.getAmountNeeded());
+	}
 	
 	public String getPrintInfo(Player player, int questTracker){
 		int howMuch = 0; //this is how far along they are in their current quest. It will be changed based on what quest type they have.

@@ -56,7 +56,14 @@ public class Reward {
 		this.displayName = moneyName;
 	}
 	
-	
+	 //false if it's not a money reward
+	public boolean scaleMoneyReward(int factor){
+		if(this.type.equalsIgnoreCase("money")){
+			this.setHowMuch(factor * this.getHowMuch());
+			return true;
+		}
+		return false;
+	}
 	
 	/*
 	 * Different based on the type of reward

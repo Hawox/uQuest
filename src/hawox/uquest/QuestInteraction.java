@@ -164,7 +164,7 @@ final public class QuestInteraction {
 		//get the players current quest as well if they have one
 		CurrentQuest currentQuest = null;
 		if(quester.getQuestID() != -1){
-			if(scaleToQuesterLevel == true){
+			if(scaleToQuesterLevel == false){ //whoops... I had this true. That's why it didn't work before v1.0 x.x;;
 				currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), 0);
 			}else{
 				currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), this.getQuestLevel(player));
