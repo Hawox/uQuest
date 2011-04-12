@@ -1,6 +1,6 @@
 name: uQuest
 main: hawox.uquest.UQuest
-version: 1.05
+version: 1.10
 author: Hawox
 description: >
              Lightweight but heavily customizable quest plugin.
