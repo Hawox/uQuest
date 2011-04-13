@@ -91,44 +91,44 @@ public class UQuestEntityListener extends EntityListener {
     			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
 //    			if(loadedQuest.checkType("kill")){
     				//check if the monster they killed in the one they needed
-    				if( (creature instanceof Skeleton) && (loadedQuest.checkObjective("kill","skeleton"))){
+    				if( (creature instanceof Skeleton) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","skeleton"))){
     					quester.addToTracker(plugin, "skeleton", 1);
     				}
-    				if( (creature instanceof Pig) && (loadedQuest.checkObjective("kill","pig"))){
+    				if( (creature instanceof Pig) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","pig"))){
     					quester.addToTracker(plugin, "pig", 1);
     					//system.out.println("Pig killed!");
     				}
-    				if( (creature instanceof Sheep) && (loadedQuest.checkObjective("kill","sheep"))){
+    				if( (creature instanceof Sheep) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","sheep"))){
     					quester.addToTracker(plugin, "sheep", 1);
     				}
-    				if( (creature instanceof Cow) && (loadedQuest.checkObjective("kill","cow"))){
+    				if( (creature instanceof Cow) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","cow"))){
     					quester.addToTracker(plugin, "cow", 1);
     				}
-    				if( (creature instanceof Chicken) && (loadedQuest.checkObjective("kill","chicken"))){
+    				if( (creature instanceof Chicken) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","chicken"))){
     					quester.addToTracker(plugin, "chicken", 1);
     				}
-    				if( (creature instanceof Squid) && (loadedQuest.checkObjective("kill","squid"))){
+    				if( (creature instanceof Squid) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","squid"))){
     					quester.addToTracker(plugin, "squid", 1);
     				}
-    				if( (creature instanceof Spider) && (loadedQuest.checkObjective("kill","spider"))){
+    				if( (creature instanceof Spider) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","spider"))){
     					quester.addToTracker(plugin, "spider", 1);
     				}
-    				if( (creature instanceof Zombie) && (loadedQuest.checkObjective("kill","zombie"))){
+    				if( (creature instanceof Zombie) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","zombie"))){
     					quester.addToTracker(plugin, "zombie", 1);
     				}
-    				if( (creature instanceof Creeper) && (loadedQuest.checkObjective("kill","creeper"))){
+    				if( (creature instanceof Creeper) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","creeper"))){
     					quester.addToTracker(plugin, "creeper", 1);
     				}
-    				if( (creature instanceof Slime) && (loadedQuest.checkObjective("kill","slime"))){
+    				if( (creature instanceof Slime) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","slime"))){
     					quester.addToTracker(plugin, "slime", 1);
     				}
-    				if( (creature instanceof Ghast) && (loadedQuest.checkObjective("kill","ghast"))){
+    				if( (creature instanceof Ghast) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","ghast"))){
     					quester.addToTracker(plugin, "ghast", 1);
     				}
-    				if( (creature instanceof Giant) && (loadedQuest.checkObjective("kill","giant"))){
+    				if( (creature instanceof Giant) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","giant"))){
     					quester.addToTracker(plugin, "giant", 1);
     				}
-    				if( (creature instanceof PigZombie) && (loadedQuest.checkObjective("kill","pigzombie"))){
+    				if( (creature instanceof PigZombie) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","pigzombie"))){
     					quester.addToTracker(plugin, "pigzombie", 1);
     				}
 //    			}
@@ -148,7 +148,7 @@ public class UQuestEntityListener extends EntityListener {
     			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
 //    			if(loadedQuest.checkType("kill")){
     				//check if the monster they killed in the one they needed
-    				if(loadedQuest.checkObjective("kill","player")){
+    				if(loadedQuest.checkObjective(plugin, player.getLocation(),"kill","player")){
     					quester.addToTracker(plugin, "player", 1);
     				}
 //    			}

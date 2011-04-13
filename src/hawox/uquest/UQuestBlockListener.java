@@ -61,7 +61,7 @@ public class UQuestBlockListener extends BlockListener {
 			//check if the block they (did 'type' to) is the one they need
 			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
 			String objectiveName = Integer.toString(block.getTypeId());
-			if(loadedQuest.checkObjective(type, objectiveName)){
+			if(loadedQuest.checkObjective(plugin, player.getLocation(), type, objectiveName)){
 				//Awesome! Increase their broken blocks!
 				quester.addToTracker(plugin, objectiveName, 1);
 			}

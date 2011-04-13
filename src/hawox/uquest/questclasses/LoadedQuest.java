@@ -8,6 +8,7 @@ import hawox.uquest.questclasses.QuestLoader.ymlReward;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class LoadedQuest {
@@ -105,10 +106,27 @@ public class LoadedQuest {
 //		}
 	}
 	
-	public boolean checkObjective(String type, String name){
+	public boolean checkObjective(UQuest plugin, Location point, String type, String name){
 		//system.out.println(type + " _____ " + name);
 		//system.out.println(this.objectiveTypes.contains(type + ":" + name));
+		if(this.objectiveTypes.contains(type + ":" + name)){
+			Objective obj = this.getObjectiveFromTypes(type, name);
+			if(obj != null){
+				return (obj.locationCheck(plugin, point));
+			}
+		}
+		
+		//If, for some reason, the new location check above fails and we get a null obj. We will still have this old fallback here.
 		return ( this.objectiveTypes.contains(type + ":" + name) );
+	}
+	
+	public Objective getObjectiveFromTypes(String type, String name){
+		for(Objective obj : this.objectives){
+			if(obj.type.equalsIgnoreCase(type) && obj.getObjectiveName().equalsIgnoreCase(name))
+				return obj;
+		}
+		//no matching objective
+		return null;
 	}
 	
 	/*public boolean checkType(String type){

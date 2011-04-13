@@ -282,4 +282,28 @@ public class Objective{
 	public void setAmountNeeded(int amountNeeded) {
 		this.amountNeeded = amountNeeded;
 	}
+
+	public String getLocationNeeded() {
+		return locationNeeded;
+	}
+
+	public void setLocationNeeded(String locationNeeded) {
+		this.locationNeeded = locationNeeded;
+	}
+
+	public String getLocationGiveRange() {
+		return locationGiveRange;
+	}
+
+	public void setLocationGiveRange(String locationGiveRange) {
+		this.locationGiveRange = locationGiveRange;
+	}
+
+	public ItemStack getItemNeeded() {
+		return itemNeeded;
+	}
+
+	public void setItemNeeded(ItemStack itemNeeded) {
+		this.itemNeeded = itemNeeded;
+	}
 }
