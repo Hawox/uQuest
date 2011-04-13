@@ -30,7 +30,7 @@ public class Cmd_uquest implements CommandExecutor{
 			}
 		//should make this a place at this point
 		
-		boolean processQuest = false;
+		/*boolean processQuest = false;
 		
 		try{
 		if(plugin.isUsePermissions() == true){
@@ -46,9 +46,22 @@ public class Cmd_uquest implements CommandExecutor{
 			//they don't have permissions so disable it plugin wide
 			plugin.setUsePermissions(false);
 			System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
+		}*/
+		
+		//This is now a permissions communication check as well as an update notice.
+		try{
+			if(plugin.isUsePermissions() == true){
+				if(UQuest.Permissions.has(player, "uQuest.CanQuest")){
+					System.err.println(plugin.pluginNameBracket() + " The node 'uQuest.CanQuest' is no longer used. Update this!");
+				}
+			}
+		}catch(NoClassDefFoundError ncdfe){
+				//they don't have permissions so disable it plugin wide
+				plugin.setUsePermissions(false);
+				System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
 		}
 		
-		if(processQuest == true){
+//		if(processQuest == true){
 						
 			try{
 				//because we'll be using it alot, lets just nab the users saved info here so the code looks a bit neater
@@ -61,51 +74,70 @@ public class Cmd_uquest implements CommandExecutor{
 				/* FIXME Ranking Stuff goes here */
 					
 				if( (args[0].equalsIgnoreCase("give")) ){
-					//We want the first quest to be easy. Always give quest id 1 first!
-					if(quester.getQuestsCompleted() < 1){
-						plugin.getQuestInteraction().giveQuest(0, player);
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanQuest.give")) ) ){
+						//We want the first quest to be easy. Always give quest id 1 first!
+						if(quester.getQuestsCompleted() < 1){
+							plugin.getQuestInteraction().giveQuest(0, player);
+						}else{
+							plugin.getQuestInteraction().giveQuestRandom(player);
+						}
 					}else{
-						plugin.getQuestInteraction().giveQuestRandom(player);
-					}
+						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						return true;					}
 				}
 							
 								
 				if( (args[0].equalsIgnoreCase("info")) ){
-					//make sure the player has a quest then simply read out the info of that quest eZ
-					if(quester.getQuestID() == -1){
-						player.sendMessage("You don't have an active quest!");
-					} else{
-						//player has a quest so...
-						plugin.getQuestInteraction().getCurrentQuest(player,plugin.getQuestInteraction().isScaleQuestLevels()).printInfo(this.plugin, player);
-					}
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanQuest.info")) ) ){
+						//make sure the player has a quest then simply read out the info of that quest eZ
+						if(quester.getQuestID() == -1){
+							player.sendMessage("You don't have an active quest!");
+						} else{
+							//player has a quest so...
+							plugin.getQuestInteraction().getCurrentQuest(player,plugin.getQuestInteraction().isScaleQuestLevels()).printInfo(this.plugin, player);
+						}
+					}else{
+						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						return true;					}
 				}
 							
 				if( (args[0].equalsIgnoreCase("stats")) ){
-					plugin.getQuestInteraction().showQuestersInfo(player);
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanQuest.stats")) ) ){
+						plugin.getQuestInteraction().showQuestersInfo(player);
+					}else{
+						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						return true;					}
 				}
 				
 				if( (args[0].equalsIgnoreCase("amount")) ){
-					//Tell the player the # of quests in the system
-					player.sendMessage("There are currently " + ChatColor.GOLD + Integer.toString(plugin.getQuestInteraction().getQuestTotal()) + ChatColor.WHITE + " quests loaded!");
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanQuest.amount")) ) ){
+						//Tell the player the # of quests in the system
+						player.sendMessage("There are currently " + ChatColor.GOLD + Integer.toString(plugin.getQuestInteraction().getQuestTotal()) + ChatColor.WHITE + " quests loaded!");
+					}else{
+						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						return true;					}
 				}
 				
 							
 				if( (args[0].equalsIgnoreCase("done")) ){
-					
-					if(quester.getQuestID() == -1){
-						player.sendMessage(ChatColor.RED + "You don't have an active quest!");
-					} else{
-						if(plugin.getQuestInteraction().questTurnInAttempt(player) == true){
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanQuest.done")) ) ){
+						if(quester.getQuestID() == -1){
+							player.sendMessage(ChatColor.RED + "You don't have an active quest!");
+						} else{
+							if(plugin.getQuestInteraction().questTurnInAttempt(player) == true){
 							
-						}else{
-							//quest is not done!
-							player.sendMessage(ChatColor.RED + "Your quest isn't done! Type: /uQuest info");
+							}else{
+								//quest is not done!
+								player.sendMessage(ChatColor.RED + "Your quest isn't done! Type: /uQuest info");
+							}
 						}
-					}
+					}else{
+						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						return true;					}
 				}
 				
 				if( (args[0].equalsIgnoreCase("drop")) ){
-					boolean processDrop = false;
+/*					boolean processDrop = false;
 					
 					if(plugin.isUsePermissions() == true){
 						if(UQuest.Permissions.has(player, "uQuest.CanDropQuest")){
@@ -115,7 +147,8 @@ public class Cmd_uquest implements CommandExecutor{
 						//no permission support so we let everyone use it!
 						processDrop = true;
 					}
-					if(processDrop == true){
+					if(processDrop == true){*/
+					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.Permissions.has(player, "uQuest.CanDropQuest")) ) ){
 						//do they even have a quest?
 						if(quester.getQuestID() != -1){
 							if(plugin.getQuestInteraction().isPlayerOnDropQuestList(player.getName()) == true){
@@ -169,9 +202,9 @@ public class Cmd_uquest implements CommandExecutor{
 				}	
 			//}
 			//end of /questme prefix
-	    }else{
-	    	player.sendMessage(ChatColor.RED + "You don't have permission to use that!");
-	    }
+//	    }else{
+//	    	player.sendMessage(ChatColor.RED + "You don't have permission to use that!");
+//	    }
 		return true;
 	}
 	
