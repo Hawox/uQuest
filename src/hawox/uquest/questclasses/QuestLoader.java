@@ -235,24 +235,40 @@ public class QuestLoader {
 			this.Give_Range = Give_Range;
 		}
 		
+		// world:x:y:z
 		public String toStringFromPoint(){
-			String returnMe = "world:";
-			returnMe += Give_Range.get("World");
-			returnMe += "~x:";
-			returnMe += Integer.toString((Integer)Give_Range.get("X"));
-			returnMe += "~y:";
-			returnMe += Integer.toString((Integer)Give_Range.get("Y"));
-			returnMe += "~z:";
-			returnMe += Integer.toString((Integer)Give_Range.get("Z"));
+			//String returnMe = "world:";
+			//returnMe += Point.get("World");
+			//returnMe += "~x:";
+			//returnMe += Integer.toString((Integer)Point.get("X"));
+			//returnMe += "~y:";
+			//returnMe += Integer.toString((Integer)Point.get("Y"));
+			//returnMe += "~z:";
+			//returnMe += Integer.toString((Integer)Point.get("Z"));
+			
+			String returnMe = (String) Point.get("World");
+			returnMe += ":";
+			returnMe = Integer.toString((Integer)Point.get("X"));
+			returnMe += ":";
+			returnMe += Integer.toString((Integer)Point.get("Y"));
+			returnMe += ":";
+			returnMe += Integer.toString((Integer)Point.get("Z"));
+
 			return returnMe;
 		}
 		
+		// x:y:z
 		public String toStringFromGive(){
-			String returnMe = "x:";
-			returnMe += Integer.toString((Integer)Give_Range.get("X"));
-			returnMe += "~y:";
+			//String returnMe = "x:";
+			//returnMe += Integer.toString((Integer)Give_Range.get("X"));
+			//returnMe += "~y:";
+			//returnMe += Integer.toString((Integer)Give_Range.get("Y"));
+			//returnMe += "~z:";
+			//returnMe += Integer.toString((Integer)Give_Range.get("Z"));
+			String returnMe = Integer.toString((Integer)Give_Range.get("X"));
+			returnMe += ":";
 			returnMe += Integer.toString((Integer)Give_Range.get("Y"));
-			returnMe += "~z:";
+			returnMe += ":";
 			returnMe += Integer.toString((Integer)Give_Range.get("Z"));
 			return returnMe;
 		}

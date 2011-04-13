@@ -1,7 +1,10 @@
 package hawox.uquest.questclasses;
 
+import hawox.uquest.UQuest;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,8 +14,10 @@ public class Objective {
 	String displayname;			 //Name that will be displayed to the users
 	String objectiveName;		 //this will be the itemID/monster name based on the type of quest it is.
 	int amountNeeded;			 //Amount of needed. Whether it be items, monster kills, etc
-	Location locationNeeded;	 //The point where the quest needs to be
-	Location locationGiveRange;  //How far from the point players can be in any direction.
+	
+	//So we don't have to store a plugin object here (just in case I ever need to serialize these) locations will be strings.
+	String locationNeeded;	 //The point where the quest needs to be
+	String locationGiveRange;  //How far from the point players can be in any direction.
 	
 	
 	/*These may or may not be used depending on the type of quest it is*/
@@ -28,8 +33,8 @@ public class Objective {
 		this.displayname = displayName;
 		this.objectiveName = objectiveName;
 		this.amountNeeded = amountNeeded;
-		//this.locationNeeded = locationNeeded;
-		//this.locationGiveRange = locationGiveRange;
+		this.locationNeeded = point;
+		this.locationGiveRange = give;
 	}
 	
 	//Used for quests that require items
@@ -42,11 +47,63 @@ public class Objective {
 		this.itemNeeded = itemNeeded;
 		this.objectiveName = Integer.toString(itemNeeded.getTypeId());
 		this.amountNeeded = itemNeeded.getAmount();
-//		this.locationNeeded = new Location(
-//		this.locationGiveRange = locationGiveRange;
+		this.locationNeeded = point;
+		this.locationGiveRange = give;
 	}
 	
 	
+	public boolean locationCheck(UQuest plugin, Location pointCheck){
+		try{
+			Location neededLocation = this.pointToLocation(plugin);
+
+			//Just quit if it's not the right world!
+			if(!(pointCheck.getWorld().equals(neededLocation))){
+				return false;
+			}
+			//x,y,z
+			String[] giveSplit = this.locationGiveRange.split(":");
+			int[] checkX = { (Math.round(Math.round(pointCheck.getX())) - Integer.parseInt(giveSplit[0])),(Math.round(Math.round(pointCheck.getX())) + Integer.parseInt(giveSplit[0])) };
+			int[] checkY = { (Math.round(Math.round(pointCheck.getY())) - Integer.parseInt(giveSplit[1])),(Math.round(Math.round(pointCheck.getY())) + Integer.parseInt(giveSplit[1])) };
+			int[] checkZ = { (Math.round(Math.round(pointCheck.getZ())) - Integer.parseInt(giveSplit[2])),(Math.round(Math.round(pointCheck.getZ())) + Integer.parseInt(giveSplit[2])) };
+
+			//check x
+			if( (pointCheck.getX() >= checkX[0]) && (pointCheck.getX() <= checkX[1]) ){
+				//check y
+				if( (pointCheck.getY() >= checkY[0]) && (pointCheck.getY() <= checkY[1]) ){
+					//check z
+					if( (pointCheck.getZ() >= checkZ[0]) && (pointCheck.getZ() <= checkZ[1]) ){
+						//Yay were are in the right world and within all the given bounds!!!
+						return true;
+					}
+				}
+
+			}
+			//Not in bounds
+			return false;
+			
+		}catch(NullPointerException npe){
+			//just return true because we couldn't get a valid location.
+			return true;
+		}
+	}
+	
+	public Location pointToLocation(UQuest plugin){
+		try{
+			// world:x:y:z
+			String[] splitInfo = this.locationNeeded.split(":");
+			World world = plugin.getServer().getWorld(splitInfo[0]);
+			int x = Integer.parseInt(splitInfo[1]);
+			int y = Integer.parseInt(splitInfo[2]);
+			int z = Integer.parseInt(splitInfo[3]);
+
+			Location returnMe = new Location(world,x,y,z);
+			
+			return (returnMe);
+		}catch(ArrayIndexOutOfBoundsException aiobe){
+			//Either there was no location or they messed it up. Either way just send null.
+			return null;
+		}
+	}
 	
 	/*
 	 * Basicly delete items it has for now
@@ -215,26 +272,4 @@ public class Objective {
 	public void setAmountNeeded(int amountNeeded) {
 		this.amountNeeded = amountNeeded;
 	}
-
-
-	public Location getLocationNeeded() {
-		return locationNeeded;
-	}
-
-
-	public void setLocationNeeded(Location locationNeeded) {
-		this.locationNeeded = locationNeeded;
-	}
-
-
-	public Location getLocationGiveRange() {
-		return locationGiveRange;
-	}
-
-
-	public void setLocationGiveRange(Location locationGiveRange) {
-		this.locationGiveRange = locationGiveRange;
-	}
-	
-
 }
