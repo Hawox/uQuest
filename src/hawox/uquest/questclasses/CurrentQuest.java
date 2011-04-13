@@ -17,14 +17,15 @@ import hawox.uquest.UQuest;
 public class CurrentQuest extends LoadedQuest{
 
 	public CurrentQuest(UQuest plugin, LoadedQuest theQuest, int level) {
-		//currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), this.getQuestLevel(player));
-		//TODO Leveling
-		super();
 		this.name = theQuest.getName();
 		this.startInfo = theQuest.getStartInfo();
 		this.finishInfo = theQuest.getFinishInfo();
-		this.rewards = theQuest.getRewards();
-		this.objectives = theQuest.getObjectives();
+		for(Reward reward : theQuest.getRewards()){
+			this.rewards.add(new Reward(reward));
+		}
+		for(Objective objective : theQuest.getObjectives()){
+			this.objectives.add(new Objective(objective));
+		}
 		this.changeQuestLevel(level);
 	}
 	

@@ -51,7 +51,8 @@ public class UQuest extends JavaPlugin {
     private static PluginListener PluginListener = null;
     private static iConomy iConomy = null;
     private static Server Server = null;
-
+    
+    
 	protected ArrayList<Quester> theQuesterList = new ArrayList<Quester>();
 	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();
 
@@ -126,6 +127,7 @@ public class UQuest extends JavaPlugin {
 	}
 
 	public void onEnable() {
+
 		setPdfFile(this.getDescription());
 
 		//load up our files if they don't exist

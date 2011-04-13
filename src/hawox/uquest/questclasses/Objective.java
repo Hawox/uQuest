@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class Objective {
+public class Objective{
 	String type;				 //Type of quest objective this will be
 	String displayname;			 //Name that will be displayed to the users
 	String objectiveName;		 //this will be the itemID/monster name based on the type of quest it is.
@@ -51,6 +51,16 @@ public class Objective {
 		this.locationGiveRange = give;
 	}
 	
+	//cloning constructor
+	public Objective(Objective old){
+		this.type = old.type;
+		this.displayname = old.getDisplayname();
+		this.itemNeeded = old.itemNeeded;
+		this.objectiveName = old.objectiveName;
+		this.amountNeeded = old.amountNeeded;
+		this.locationNeeded = old.locationNeeded;
+		this.locationGiveRange = old.locationGiveRange;
+	}
 	
 	public boolean locationCheck(UQuest plugin, Location pointCheck){
 		try{

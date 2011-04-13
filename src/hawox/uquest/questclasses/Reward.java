@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
  * Right now there are only two types of quest rewards, but this is here to make it easier
  *    For expansion later.
  */
-public class Reward {
+public class Reward{
 	//private final UQuest plugin;
 
 	/*public String Type;
@@ -54,6 +54,14 @@ public class Reward {
 		this.type = type;
 		this.howMuch = howMuch;
 		this.displayName = moneyName;
+	}
+	
+	//copy constructor
+	public Reward(Reward old){
+		this.type = old.type;
+		this.displayName = old.displayName;
+		this.howMuch = old.howMuch;
+		this.item = old.item;
 	}
 	
 	 //false if it's not a money reward
