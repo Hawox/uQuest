@@ -30,7 +30,7 @@ public class Cmd_reloadquestconfig implements CommandExecutor{
 		if(player != null){
 			if(plugin.isUsePermissions() == true){
 				try{
-				if(UQuest.Permissions.has(player, "uQuest.CanReloadQuestConfig")){
+				if(UQuest.getPermissions().has(player, "uQuest.CanReloadQuestConfig")){
 					process = true;
 				}
 				}catch(NoClassDefFoundError ncdfe){

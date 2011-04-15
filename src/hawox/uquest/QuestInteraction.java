@@ -361,7 +361,7 @@ final public class QuestInteraction {
 		if(plugin.isUseiConomy()){
 			return (plugin.getiConomy().getBank().getAccount(player.getName()).getBalance());
 		}else if(plugin.isUseBOSEconomy()){
-			return plugin.getTheBOSEconomy().getPlayerMoney(player.getName());
+			return plugin.getBOSEconomy().getPlayerMoney(player.getName());
 		}
 		return 0;
 	}
@@ -374,7 +374,7 @@ final public class QuestInteraction {
 			account.save();
 		}
 		if(plugin.isUseBOSEconomy()){
-			plugin.getTheBOSEconomy().setPlayerMoney(player.getName(), (int) toWhat, false);
+			plugin.getBOSEconomy().setPlayerMoney(player.getName(), (int) toWhat, false);
 		}
 		
 		/*

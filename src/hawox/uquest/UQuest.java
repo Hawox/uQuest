@@ -10,7 +10,6 @@ import hawox.uquest.questclasses.QuestLoader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -22,7 +21,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,42 +30,50 @@ import sqLiteStor.SqLiteKeyValStor;
 
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 import cosine.boseconomy.BOSEconomy;
 
 /**
- * Plugin Template
- * 
  * @author Hawox
  */
 public class UQuest extends JavaPlugin {
 	
+    //Plugin basics
+	private PluginDescriptionFile pdfFile;
+	public Logger log;
+    private static Server Server = null;
+    
+	//listeners
 	private final UQuestPlayerListener playerListener = new UQuestPlayerListener(this);
 	private final UQuestBlockListener blockListener = new UQuestBlockListener(this);
 	private final UQuestEntityListener entityListener = new UQuestEntityListener(this);
-	private PluginDescriptionFile pdfFile;
-	public Logger log;
-    private static PluginListener PluginListener = null;
+    private static PluginListener PluginListener = new PluginListener();
+    
+    //Plugin support
     private static iConomy iConomy = null;
-    private static Server Server = null;
+    private static BOSEconomy BOSEconomy = null;
+	private static PermissionHandler Permissions = null;
     
-    
-	protected ArrayList<Quester> theQuesterList = new ArrayList<Quester>();
-	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();
+    //Lists
+	protected ArrayList<Quester> theQuesterList = new ArrayList<Quester>();					//Loaded players
+	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();				//Loaded Quests
+	protected HashSet<String> canNotDrop = new HashSet<String>();							//Players on quest drop cool down
+	protected ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();			//Players on quest drop cool down
+	protected ArrayList<String> mobsKilled = new ArrayList<String>();						//Mob ID's counted as dead
+	
+	//Timers
+	private ScheduledThreadPoolExecutor mobList_Timer = new ScheduledThreadPoolExecutor(50); //Resets mob/player id's so they can be killed again
 
-	// default quest0 that will be set into the file if it dosn't exist
-	//private String quest0Default = "Get Wood:gather:Go gather me 10 wood please!:Thank you very much!:17:10:10:0:Wood:0:0";
-
-	// player storage
+	//Player storage
 	protected iProperty questPlayerStorage;
-	// stored player info will look like: PlayerName =
-	// QuestId:QuestsCompleted:MoneyEarnedFromQuests:questtracker
-	// (-1 quest id means no active quest!)
+	// stored player info will look like: PlayerName = QuestId:QuestsCompleted:MoneyEarnedFromQuests:questtracker
+		// (-1 quest id means no active quest!)
 	private String questDefaultPlayer = "-1:0:0:0,0";
+	
+	//Sqlite player storage
+	private SqLiteKeyValStor<Quester> DB;
 
-	// config
-
+	//config file defaults
 	protected boolean scaleQuestLevels = true;
 	protected boolean broadcastSaving = true;
 	protected boolean useiConomy = true;
@@ -89,60 +95,40 @@ public class UQuest extends JavaPlugin {
 			  "89,Glowstone Blocks,10",
 			  "18,Leaf Blocks,10",
 			  "344,Eggs,10"};
-
 	
-	private SqLiteKeyValStor<Quester> DB;
-
-	
-	//Has .get .update .put
-	
-	// methods only used in this plugin
-    
-    //TODO Get rid of iProp and use this
-	 //new Configuration(new File());
-	
-	Reader readerQuests = null;
-//	private QuestLoader questloader;
-
-	boolean firstLoad = true;
-	
-	HashSet<String> canNotDrop = new HashSet<String>();
-	
-	ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();
-	ArrayList<String> mobsKilled = new ArrayList<String>();
-	private ScheduledThreadPoolExecutor mobList_Timer = new ScheduledThreadPoolExecutor(50);
-	
-	//create our general quest interaction methods
+	//create our general quest interaction methods (Try to have most of the API here)
 	QuestInteraction questInteraction = new QuestInteraction(this);
 
+	//stops bad things from happening when someone reloads the plugin
+	boolean firstLoad = true;
+	
+	
+	
 
 	public void onDisable() {
-		// Runs when plugin is disabled. Events are auto disabled so do not
-		// worry about them
+		//save flat file db
 		if(!(this.isUseSQLite()))
 			saveQuesterListToFile();
 		System.out.println(pluginNameBracket() + " disabled!");
-		// System.out.println( pdfFile.getName() + " version " +
-		// pdfFile.getVersion() + " is disabled!" );
 	}
 
 	public void onEnable() {
-
+		//Basic plugin setup
+		Server = getServer();
+		log = Server.getLogger();
 		setPdfFile(this.getDescription());
 
 		//load up our files if they don't exist
 		moveFiles();
 		
-		try{
-			questPlayerStorage = new iProperty("plugins/uQuest/uQuest_Players.txt");
-		}catch(NullPointerException npe){/*Do nothing*/}
+		//Load our flat file player DB
+		questPlayerStorage = new iProperty("plugins/uQuest/uQuest_Players.txt");
+		
 		//Check if we need to convert old uQuest v1 quests
 		if(new File("plugins/uQuest/uQuest_Quests.txt").exists())
 			new QuestConverter();
 		
-		//System.out.println(getDataFolder());
 		//registerCommands
-		//using default uquest
 		if(isUseDefaultUQuest()){
 			Cmd_uquest cmd_uquest = new Cmd_uquest(this);
 			getCommand("uquest").setExecutor(cmd_uquest);
@@ -157,27 +143,11 @@ public class UQuest extends JavaPlugin {
 		Cmd_reloadquestconfig cmd_reloadquestconfig = new Cmd_reloadquestconfig(this);
 		getCommand("reloadquestconfig").setExecutor(cmd_reloadquestconfig);		
 		
-		
-		log = getServer().getLogger();
-		
 		// setup config
 		readConfig();
 		
 		// load quests into array
 		theQuestsLoadAllIntoArray();
-		
-		//iCon stuff
-		if(isUseiConomy()){
-		 Server = getServer();
-
-	        PluginListener = new PluginListener();
-
-	        // Event Registration
-	        getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, PluginListener, Priority.Monitor, this);
-		}//end iCon stuff
-		
-		// Get permissions
-		setupPermissions();
 		
 		//Get the DB fired up
 		if(isUseSQLite() == true){
@@ -192,155 +162,39 @@ public class UQuest extends JavaPlugin {
 			System.out.println(pluginNameBracket() + " Loaded with Flatfile!");
 		}
 		
-		// Runs everytime the plugin is enabled. Always register the events
-		// here! (I placed them in a custom method to make it easier to read!)
+		// Register Bukkit Hooks
 		registerEvents();
 
 		System.out.println(pluginNameBracket() + " v" + this.getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
-		// System.out.println( pdfFile.getName() + " version " +
-		// pdfFile.getVersion() + " is enabled!" );
 		
 		//For iCon at least, it hooks in after the plugin enables. Solution: Timer!
 		ScheduledThreadPoolExecutor onEnable_Timer = new ScheduledThreadPoolExecutor(1);
 		onEnable_Timer.schedule(new Runnable() {
 			public void run() {
-				if(isUseiConomy())
-					checkiCon();
-				if(isUseBOSEconomy())
-					checkBOSE();
+				checkPluginSupport();
 				}
 			}, pluginTimerCheck, TimeUnit.SECONDS);
 	}
-
-	/**
-	 * Adds Permission plugin support
-	 */
-	public static PermissionHandler Permissions = null;
-
-	public void setupPermissions() {
-		Plugin test = this.getServer().getPluginManager()
-				.getPlugin("Permissions");
-
-		if (Permissions == null) {
-			if (test != null) {
-				Permissions = ((Permissions) test).getHandler();
-			} else {
-				System.out.println(pluginNameBracket() + " Permission system not enabled. Disabling permission support.");
-				setUsePermissions(false);
-			}
-		}
-	}
-
-	/**
-	 * End of Permissions plugin thing
-	 */
 	
-	/**
-	 * Disables iConomy function if it's not here
-	 */
-	public void checkiCon(){
-		
-		 //Plugin test = getServer().getPluginManager().getPlugin("iConomy");
-		  boolean test = checkiConomy();
-		      if (test != false) {
-		        //iConomy iC = (iConomy)test;
-		        //currency = iConomy.currency;
-		      } else {
-		        log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
-		        useiConomy = false;
-		      }
-	    
-	}
-	
-	public boolean checkiConomy() {
-        this.useiConomy = (iConomy != null);
-        return this.useiConomy;
-    }
-    
-    /**
-	 * Disables BOSE function if it's not here
-	 */
-    BOSEconomy theBOSEconomy = null;
-
-	public void checkBOSE(){
-	    Plugin temp = this.getServer().getPluginManager().getPlugin("BOSEconomy");
-		  
-		      if (temp != null) {
-		    	  theBOSEconomy = (BOSEconomy)temp;
-		      } else {
-		        log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
-		        useiConomy = false;
-		      }
-	}
-	
-
 	public void registerEvents() {
 		// Register our events
 		PluginManager pm = getServer().getPluginManager();
 
-		// player Stuff, handled by the player listener
+		// Used for plugin interaction
+		pm.registerEvent(Event.Type.PLUGIN_ENABLE, PluginListener, Priority.Monitor, this);
+		
+		// Player Stuff
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,Priority.Normal, this);
-		// TODO pm.registerEvent(Event.Type.ENTITY_DEATH, playerListener,Priority.Normal, this);
 
-		// Block Stuff, handled by the block listener
+		// Block Stuff
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener,Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener,Priority.Normal, this);
 		
-		//entity
+		// Entity Stuff
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Normal, this);
 	}
 	
-	public void moveFiles(){
-		getDataFolder().mkdir();
-		getDataFolder().setWritable(true);
-	    getDataFolder().setExecutable(true);
-		extractFile("config.yml");
-		//extractFile("new.Quests.yml");
-		extractFile("Quests.yml");
-		extractFile("uQuest_Players.txt");
-		extractFile("uQuestQuesters");
-	}
-	
-	//Taken and modified from iCon
-	  private void extractFile(String name) {
-		    File actual = new File(getDataFolder(), name);
-		    if (!actual.exists()) {
-		      InputStream input = getClass().getResourceAsStream("/Default_Files/" + name);
-		      if (input != null) {
-		        FileOutputStream output = null;
-		        try
-		        {
-		          output = new FileOutputStream(actual);
-		          byte[] buf = new byte[8192];
-		          int length = 0;
-
-		          while ((length = input.read(buf)) > 0) {
-		            output.write(buf, 0, length);
-		          }
-
-		          System.out.println(pluginNameBracket() + " Default file written: " + name);
-		        } catch (Exception e) {
-		          e.printStackTrace();
-		        } finally {
-		          try {
-		            if (input != null)
-		              input.close();
-		          }
-		          catch (Exception e) {
-		          }
-		          try {
-		            if (output != null)
-		              output.close();
-		          }
-		          catch (Exception e)
-		          {
-		          }
-		        }
-		      }
-		    }
-		  }
-
 	public void readConfig() {
 		/* private boolean useDefaultUQuest = true;
 		 * 
@@ -395,7 +249,7 @@ public class UQuest extends JavaPlugin {
 		pluginTimerCheck = config.getInt("PluginSupport.pluginTimerCheck", pluginTimerCheck);
 		useiConomy = config.getBoolean("PluginSupport.useiConomy", useiConomy);
 		usePermissions = config.getBoolean("PluginSupport.usePermissions", usePermissions);
-		//useEssentialsEco = config.getBoolean("PluginSupport.useEssentialsEco", useEssentialsEco);
+		//TODO useEssentialsEco = config.getBoolean("PluginSupport.useEssentialsEco", useEssentialsEco);
 		useBOSEconomy = config.getBoolean("PluginSupport.useBOSEconomy", useBOSEconomy);
 		moneyName = config.getString("PluginSupport.moneyName", moneyName);
 		
@@ -409,135 +263,88 @@ public class UQuest extends JavaPlugin {
 		dropQuestInterval = config.getInt("QuestDropping.dropQuestInterval", dropQuestInterval);
 		dropQuestCharge = config.getInt("QuestDropping.dropQuestCharge", dropQuestCharge);
 
-		/*
-		if ((config.keyExists("scaleQuestLevels"))) {
-			scaleQuestLevels = config.getBoolean("scaleQuestLevels");
-		} else {
-			config.setBoolean("scaleQuestLevels", scaleQuestLevels);
-		}
+	}
+	
+	public void moveFiles(){
+		getDataFolder().mkdir();
+		getDataFolder().setWritable(true);
+	    getDataFolder().setExecutable(true);
+		extractFile("config.yml");
+		extractFile("Quests.yml");
+		extractFile("uQuest_Players.txt");
+		extractFile("uQuestQuesters");
+	}
+	
+	//Taken and modified from iCon
+	private void extractFile(String name) {
+		File actual = new File(getDataFolder(), name);
+		if (!actual.exists()) {
+			InputStream input = getClass().getResourceAsStream("/Default_Files/" + name);
+			if (input != null) {
+				FileOutputStream output = null;
+				try
+		        {
+		          output = new FileOutputStream(actual);
+		          byte[] buf = new byte[8192];
+		          int length = 0;
 
-		if ((config.keyExists("broadcastFlatFileSaving"))) {
-			broadcastSaving = config.getBoolean("broadcastFlatFileSaving");
-		} else {
-			config.setBoolean("broadcastFlatFileSaving", broadcastSaving);
-		}
-		
-		if ((config.keyExists("useiConomy"))) {
-			useiConomy = config.getBoolean("useiConomy");
-		} else {
-			config.setBoolean("useiConomy", useiConomy);
-		}
-		
-		if ((config.keyExists("useSQLite"))) {
-			setUseSQLite(config.getBoolean("useSQLite"));
-		} else {
-			config.setBoolean("useSQLite", isUseSQLite());
-		}
-		
-		if ((config.keyExists("usePermissions"))) {
-			setUsePermissions((config.getBoolean("usePermissions")));
-		} else {
-			config.setBoolean("usePermissions", isUsePermissions());
-		}
-		
-		if ((config.keyExists("useDefaultUQuest"))) {
-			setUseDefaultUQuest((config.getBoolean("useDefaultUQuest")));
-		} else {
-			config.setBoolean("useDefaultUQuest", isUseDefaultUQuest());
-		}
-		
-		if ((config.keyExists("useEssentialsEco"))) {
-			setUseEssentialsEco((config.getBoolean("useEssentialsEco")));
-		} else {
-			config.setBoolean("useEssentialsEco", isUseEssentialsEco());
-		}
-		
-		if ((config.keyExists("useBOSEconomy"))) {
-			setUseBOSEconomy((config.getBoolean("useBOSEconomy")));
-		} else {
-			config.setBoolean("useBOSEconomy", isUseBOSEconomy());
-		}
-		
-		if ((config.keyExists("SaveFlatFileQuestersInfoIntervalInMinutes"))) {
-			SaveQuestersInfoIntervalInMinutes = config.getInt("SaveFlatFileQuestersInfoIntervalInMinutes");
-		} else {
-			config.setInt("SaveFlatFileQuestersInfoIntervalInMinutes", SaveQuestersInfoIntervalInMinutes);
-		}
+		          while ((length = input.read(buf)) > 0) {
+		            output.write(buf, 0, length);
+		          }
 
-		if ((config.keyExists("questAnnounceInterval"))) {
-			questAnnounceInterval = config.getInt("questAnnounceInterval");
-		} else {
-			config.setInt("questAnnounceInterval", questAnnounceInterval);
-		}
-		
-		if ((config.keyExists("dropQuestInterval"))) {
-			dropQuestInterval = config.getInt("dropQuestInterval");
-		} else {
-			config.setInt("dropQuestInterval", dropQuestInterval);
-		}
-		
-		if ((config.keyExists("dropQuestCharge"))) {
-			dropQuestCharge = config.getInt("dropQuestCharge");
-		} else {
-			config.setInt("dropQuestCharge", dropQuestCharge);
-		}
-
-		if ((config.keyExists("questRewardInterval"))) {
-			questRewardInterval = config.getInt("questRewardInterval");
-		} else {
-			config.setInt("questRewardInterval", questRewardInterval);
-		}
-		
-		if ((config.keyExists("questLevelInterval"))) {
-			questLevelInterval = config.getInt("questLevelInterval");
-		} else {
-			config.setInt("questLevelInterval", questLevelInterval);
-		}
-
-		// This one is different because we want it to be a String[][]
-		if ((config.keyExists("questRewards"))) {
-			try {
-				String[] loadedInfo = config.getString("questRewards").split("~");
-				setQuestRewards(loadedInfo);
-				//test every reward threw a meaningless loop to try and get the catch to run
-				for(int i=0; i<loadedInfo.length; i++){
-					String rewards[] = loadedInfo[i].split(",");
-					rewards[0] = rewards[0];
-					rewards[1] = rewards[1];
-					rewards[2] = rewards[2];
-				}
-			} catch (ArrayIndexOutOfBoundsException aiobe) {
-				log.log(Level.SEVERE, "[" + this.pdfFile.getName() + "] Error setting up quest rewards! Fix the config file!");
-				log.log(Level.SEVERE, "[" + this.pdfFile.getName() + "] Quest item rewards may give undesired results!");
+		          System.out.println(pluginNameBracket() + " Default file written: " + name);
+		        } catch (Exception e) {
+		          e.printStackTrace();
+		        } finally {
+		          try {
+		            if (input != null)
+		              input.close();
+		          }
+		          catch (Exception e) {
+		          }
+		          try {
+		            if (output != null)
+		              output.close();
+		          }
+		          catch (Exception e)
+		          {
+		          }
+		        }
 			}
-		} else {
-			config.setString("questRewards","87,Netherrack Blocks,10~88,Soul Sand Blocks,10~89,Glowstone Blocks,10~18,Leaf Blocks,10~344,Eggs,10~348,Glowstone Dust,10");
 		}
-
-		
-		
-		// check if theres a questStoreage file. If not make one with the
-		// default quest
-		if (!(questStorage.keyExists("Quest_0"))) {
-			questStorage.setString("Quest_0", quest0Default);
-		}*/
-
+	}
+	  
+	//Makes sure all of our supported plugins are loaded and accounted for
+	public void checkPluginSupport(){
+		checkiCon();
+		checkPerm();
+		checkBOSE();
 	}
 
-	// blocks that will be awarded every x quests
-	// int[] randomBlockRewards = {87,88,89,18,344,348};
-	// String[] randomBlockRewardsNames =
-	// {"Netherstone Blocks","Slow Sand Blocks","Lightstone Blocks","Leaf Blocks","Eggs","Lightstone Dust"};
-
-	// [Number][itemID, name, amount to give]
-	/*
-	private String[][] questRewards = { { "87", "Netherrack Blocks", "10" },
-			{ "88", "Soul Sand Blocks", "10" },
-			{ "89", "Glowstone Blocks", "10" },
-			{ "18", "Leaf Blocks", "10" },
-			{ "344", "Eggs", "10" }, { "348", "Glowstone Dust", "10" } };*/
+	public void checkiCon(){	
+		boolean test = this.useiConomy = (iConomy != null);
+		if (test == false) {
+			log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
+			this.useiConomy = false;
+		}
+	}
 	
-	// [itemID, name, amount to give]
+	public void checkPerm(){	
+		boolean test = this.usePermissions = (Permissions != null);
+		if (test == false) {
+			log.log(Level.SEVERE, pluginNameBracket() + " Permissions is not loaded. Turning Permissions support off.");
+			this.usePermissions = false;
+		}
+	}
+	
+	public void checkBOSE(){	
+		boolean test = this.useBOSEconomy = (BOSEconomy != null);
+		if (test == false) {
+			log.log(Level.SEVERE, pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
+			this.useBOSEconomy = false;
+		}
+	}
+
 
 
 	public void timerSavePlayers() {
@@ -551,62 +358,9 @@ public class UQuest extends JavaPlugin {
 		}, SaveQuestersInfoIntervalInMinutes, TimeUnit.MINUTES);
 	}
 
-	public String arrayToString(String[] stringToChange) {
-		// take each part of the array and separate it with ':'s
-		String stringToReturn = stringToChange[0];
-		try {
-			// start with the first index on the array
-			for (int i = 1; i < stringToChange.length; i++) {
-				stringToReturn = stringToReturn.concat(":");
-				stringToReturn = stringToReturn.concat(stringToChange[i]);
-			}
-			return stringToReturn;
-		} catch (ArrayIndexOutOfBoundsException aiobe) {
-			getServer().broadcastMessage("There was a problem converting an array to a string.");
-			log.log(Level.SEVERE, "There was a problem converting an array to a string.");
-			return null;
-		}
-	}
-
-	/*
-	 * Storage should look like: #_name = Get Wood #_type = gather #_info = Go
-	 * gather me 10 wood please! #_finishInfo = Thank you very much!
-	 * #_itemIDNeeded = 17 #_amountNeeded = 10 #_amountConsume = 10
-	 * #_rubixReward = 0 #_kitReward = quest0kit #_mixxitExpToGive = 0
-	 * #_mixxitExpNeeded = 0
-	 */
-
 	public void theQuestsLoadAllIntoArray() {
 		this.theQuests = new QuestLoader(this).loadAllQuests();
 	}
-
-	
-	
-	/* OLD
-	public void theQuestsLoadAllIntoArray() {
-		try {
-			for (int i = 0; true; i++) {
-				// see if there is a quest # for the current i, if there is keep
-				// going, otherwise bail out
-				if (questStorage.keyExists("Quest_" + Integer.toString(i))) {
-					theQuests.add(
-							i,
-							new LoadedQuest(this, questStorage.getString(
-									"Quest_" + Integer.toString(i)).split(":"),
-									i));
-				} else {
-					// okay we're at the end break out!
-					break;
-				}
-			}
-		} catch (ArrayIndexOutOfBoundsException aiobe) {
-			getServer().broadcastMessage(
-					"There was a problem loading the # of quests.");
-		}
-	}*/
-	
-
-	
 	
 	public void saveQuesterToFile(Quester quester){
 		questPlayerStorage.setString(quester.theQuestersName, quester.toString());
@@ -648,13 +402,60 @@ public class UQuest extends JavaPlugin {
 		return false;
 	}
 
-	
+	public String arrayToString(String[] stringToChange) {
+		// take each part of the array and separate it with ':'s
+		String stringToReturn = stringToChange[0];
+		try {
+			// start with the first index on the array
+			for (int i = 1; i < stringToChange.length; i++) {
+				stringToReturn = stringToReturn.concat(":");
+				stringToReturn = stringToReturn.concat(stringToChange[i]);
+			}
+			return stringToReturn;
+		} catch (ArrayIndexOutOfBoundsException aiobe) {
+			getServer().broadcastMessage("There was a problem converting an array to a string.");
+			log.log(Level.SEVERE, "There was a problem converting an array to a string.");
+			return null;
+		}
+	}
 
 	public String pluginNameBracket(){
 		return ("[" + this.getPdfFile().getName() + "]");
 	}
 	
 
+	//Plugin support getters and setters
+    public static iConomy getiConomy() {
+        return iConomy;
+    }
+    
+    public static boolean setiConomy(iConomy plugin) {
+        if (iConomy == null) {
+            iConomy = plugin;
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
+	public static void setPermissions(PermissionHandler permissions) {
+		Permissions = permissions;
+	}
+
+	public static PermissionHandler getPermissions() {
+		return Permissions;
+	}
+    
+	public static BOSEconomy getBOSEconomy() {
+		return BOSEconomy;
+	}
+
+	public static void setBOSEconomy(BOSEconomy bOSEconomy) {
+		BOSEconomy = bOSEconomy;
+	}
+
+	
+	//Getters and Setters
 	public ArrayList<Quester> getTheQuesterList() {
 		return theQuesterList;
 	}
@@ -780,19 +581,6 @@ public class UQuest extends JavaPlugin {
         return Server;
     }
 
-    public static iConomy getiConomy() {
-        return iConomy;
-    }
-    
-    public static boolean setiConomy(iConomy plugin) {
-        if (iConomy == null) {
-            iConomy = plugin;
-        } else {
-            return false;
-        }
-        return true;
-    }
-
 	public QuestInteraction getQuestInteraction() {
 		return questInteraction;
 	}
@@ -807,14 +595,6 @@ public class UQuest extends JavaPlugin {
 
 	public void setQuestInteraction(QuestInteraction questInteraction) {
 		this.questInteraction = questInteraction;
-	}
-
-	public BOSEconomy getTheBOSEconomy() {
-		return theBOSEconomy;
-	}
-
-	public void setTheBOSEconomy(BOSEconomy theBOSEconomy) {
-		this.theBOSEconomy = theBOSEconomy;
 	}
 
 	public boolean isUseBOSEconomy() {
@@ -847,14 +627,6 @@ public class UQuest extends JavaPlugin {
 
 	public void setCanNotDrop(HashSet<String> canNotDrop) {
 		this.canNotDrop = canNotDrop;
-	}
-
-	public Reader getReaderQuests() {
-		return readerQuests;
-	}
-
-	public void setReaderQuests(Reader readerQuests) {
-		this.readerQuests = readerQuests;
 	}
 
 	public String getMoneyName() {
@@ -896,7 +668,6 @@ public class UQuest extends JavaPlugin {
 	public void setMobList_Timer(ScheduledThreadPoolExecutor mobList_Timer) {
 		this.mobList_Timer = mobList_Timer;
 	}
-    
     
 	
 }
