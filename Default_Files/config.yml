@@ -1,6 +1,8 @@
 #Change this to false if you are only using uQuest for it's API
 etc:
     useDefaultUQuest: true
+    #Will not show players the quests rewards untill they finish the quest
+    hideQuestRewards: false
     #The random quest rewards to give players. (This will be nested and look like reward: item: soon. I'm just trying to get this update out atm)
     questRewards: 87,Netherrack Blocks,10~88,Soul Sand Blocks,10~89,Glowstone Blocks,10~18,Leaf Blocks,10~344,Eggs,10~348,Glowstone Dust,10
  

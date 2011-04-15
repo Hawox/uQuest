@@ -71,11 +71,13 @@ public class LoadedQuest {
 			player.sendMessage(ChatColor.RED + "None");
 		}
 		//Rewards
-		player.sendMessage("Reward:");
-		for(Reward reward : this.rewards){
-			player.sendMessage(reward.getPrintInfo());
-		}if(this.rewards.size() ==0){
-			player.sendMessage(ChatColor.RED + "None");
+		if(!(plugin.isHideQuestRewards())){
+			player.sendMessage("Reward:");
+			for(Reward reward : this.rewards){
+				player.sendMessage(reward.getPrintInfo());
+			}if(this.rewards.size() ==0){
+				player.sendMessage(ChatColor.RED + "None");
+			}
 		}
 		
 		/*

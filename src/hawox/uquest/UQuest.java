@@ -77,21 +77,22 @@ public class UQuest extends JavaPlugin {
 	private SqLiteKeyValStor<Quester> DB;
 
 	//config file defaults
-	protected boolean scaleQuestLevels = true;
-	protected boolean broadcastSaving = true;
-	protected boolean useiConomy = true;
+	private boolean hideQuestRewards = false;
+	private boolean scaleQuestLevels = true;
+	private boolean broadcastSaving = true;
+	private boolean useiConomy = true;
 	private boolean usePermissions = true;
 	private boolean useSQLite = false;
 	private boolean useDefaultUQuest = true;
 	private boolean useBOSEconomy = false;
 	private boolean useEssentials = false;
-	protected int SaveQuestersInfoIntervalInMinutes = 30;
-	protected int questAnnounceInterval = 5;
-	protected int questRewardInterval = 10;
-	protected int questLevelInterval = 50;
-	protected int dropQuestInterval = 60;
-	protected int dropQuestCharge = 5000;
-	protected int pluginTimerCheck = 5;
+	private int SaveQuestersInfoIntervalInMinutes = 30;
+	private int questAnnounceInterval = 5;
+	private int questRewardInterval = 10;
+	private int questLevelInterval = 50;
+	private int dropQuestInterval = 60;
+	private int dropQuestCharge = 5000;
+	private int pluginTimerCheck = 5;
     private String moneyName = "Monies";
     private String questRewardsDefault = "87,Netherrack Blocks,10~88,Soul Sand Blocks,10~89,Glowstone Blocks,10~18,Leaf Blocks,10~344,Eggs,10~348,Glowstone Dust,10";
 	private String[] questRewards = { "87,Netherrack Blocks,10",
@@ -231,6 +232,7 @@ public class UQuest extends JavaPlugin {
 		Configuration config = new Configuration(new File(getDataFolder(), "config.yml"));
 		config.load();
 		useDefaultUQuest = config.getBoolean("etc.useDefaultUQuest", useDefaultUQuest);
+		hideQuestRewards = config.getBoolean("etc.hideQuestRewards", hideQuestRewards);
 			try{
 				String[] questRewardsFromFile = config.getString("etc.questRewards", questRewardsDefault).split("~");
 				setQuestRewards(questRewardsFromFile);
@@ -252,10 +254,7 @@ public class UQuest extends JavaPlugin {
 		SaveQuestersInfoIntervalInMinutes = config.getInt("Database.SaveQuestersInfoIntervalInMinutes", SaveQuestersInfoIntervalInMinutes);
 
 		pluginTimerCheck = config.getInt("PluginSupport.pluginTimerCheck", pluginTimerCheck);
-		//useiConomy = config.getBoolean("PluginSupport.useiConomy", useiConomy);
 		usePermissions = config.getBoolean("PluginSupport.usePermissions", usePermissions);
-		//TODO useEssentialsEco = config.getBoolean("PluginSupport.useEssentialsEco", useEssentialsEco);
-		//useBOSEconomy = config.getBoolean("PluginSupport.useBOSEconomy", useBOSEconomy);
 		moneyName = config.getString("PluginSupport.moneyName", moneyName);
 		
 		//*** money plugin stuff ***//
@@ -765,6 +764,14 @@ public class UQuest extends JavaPlugin {
 
 	public UQuestBlockListener getBlockListener() {
 		return blockListener;
+	}
+
+	public boolean isHideQuestRewards() {
+		return hideQuestRewards;
+	}
+
+	public void setHideQuestRewards(boolean hideQuestRewards) {
+		this.hideQuestRewards = hideQuestRewards;
 	}
 
 	public UQuestEntityListener getEntityListener() {
