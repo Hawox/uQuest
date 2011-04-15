@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.earth2me.essentials.User;
 import com.nijiko.coelho.iConomy.system.Account;
 
 final public class QuestInteraction {
@@ -362,6 +363,9 @@ final public class QuestInteraction {
 			return (plugin.getiConomy().getBank().getAccount(player.getName()).getBalance());
 		}else if(plugin.isUseBOSEconomy()){
 			return plugin.getBOSEconomy().getPlayerMoney(player.getName());
+		}else if(plugin.isUseEssentials()){
+			User user = User.get(player);
+			return user.getMoney();
 		}
 		return 0;
 	}
@@ -376,55 +380,33 @@ final public class QuestInteraction {
 		if(plugin.isUseBOSEconomy()){
 			plugin.getBOSEconomy().setPlayerMoney(player.getName(), (int) toWhat, false);
 		}
-		
-		/*
-		if(plugin.isUseEssentialsEco()){
-			String[] empty = null;
-			plugin.getEssentials().getPlayer(args, pos)
-		}*/
+		if(plugin.isUseEssentials()){
+			User user = User.get(player);
+			user.setMoney(toWhat);
+		}
 	}
 
 	public void addMoney(Player player, int addWhat, boolean showText) {
-		if(plugin.isUseiConomy()){
+		if(plugin.isUseBOSEconomy() || plugin.isUseEssentials() || plugin.isUseiConomy()){
+			Quester quester = getQuester(player);
 			double balance = getMoney(player);
 			if(showText == true){
 				player.sendMessage(ChatColor.AQUA
 						+ "**You have been rewarded with "
-						+ Integer.toString(addWhat) + " " + /*plugin.getiConomy().getBank().getCurrency()*/ plugin.getMoneyName() + "!");
+						+ Integer.toString(addWhat) + " " + plugin.getMoneyName() + "!");
 			}
 			setMoney(player, balance + addWhat);
-			Quester quester = getQuester(player);
 			//Change this so we don't count money lost as money earned
 			if(addWhat > 0)
 				quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
 			if(showText == true){
 				player.sendMessage(ChatColor.AQUA + "**Your new balance is: "
-						+ getMoney(player) + " " + /*plugin.getiConomy().getBank().getCurrency()*/ plugin.getMoneyName());
+						+ getMoney(player) + " " + plugin.getMoneyName());
 			}
 			if(plugin.isUseSQLite() == true){
 				plugin.getDB().put(player.getName(), quester);
 			}
 		}
-		if(plugin.isUseBOSEconomy()){
-			double balance = getMoney(player);
-			if(showText == true){
-				player.sendMessage(ChatColor.AQUA
-						+ "**You have been rewarded with "
-						+ Integer.toString(addWhat) + " " + /*plugin.getTheBOSEconomy().getMoneyNamePlural()*/ plugin.getMoneyName() + "!");
-			}
-			setMoney(player, balance + addWhat);
-			Quester quester = getQuester(player);
-			if(addWhat > 0)
-				quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
-			if(showText == true){
-				player.sendMessage(ChatColor.AQUA + "**Your new balance is: "
-						+ getMoney(player) + " " + /*plugin.getTheBOSEconomy().getMoneyNamePlural()*/ plugin.getMoneyName());
-			}
-			if(plugin.isUseSQLite() == true){
-				plugin.getDB().put(player.getName(), quester);
-			}
-		}
-		
 	}
 	
 	

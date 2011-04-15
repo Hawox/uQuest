@@ -4,6 +4,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
+import com.earth2me.essentials.Essentials;
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -50,6 +51,16 @@ public class PluginListener extends ServerListener {
     		}
         }
         
+        if(UQuest.getEssentials() == null){
+    	    Plugin Essentials = UQuest.getBukkitServer().getPluginManager().getPlugin("Essentials");
+
+    	    if (Essentials != null) {
+    			if(Essentials.isEnabled()){
+    				UQuest.setEssentials((Essentials) Essentials);
+                    System.out.println("[uQuest] Successfully linked with Essentials.");
+    			}
+    		}
+        }
         
     }
 }

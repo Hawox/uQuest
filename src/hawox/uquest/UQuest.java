@@ -28,6 +28,7 @@ import org.bukkit.util.config.Configuration;
 
 import sqLiteStor.SqLiteKeyValStor;
 
+import com.earth2me.essentials.Essentials;
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijiko.permissions.PermissionHandler;
 
@@ -50,8 +51,10 @@ public class UQuest extends JavaPlugin {
     private static PluginListener PluginListener = new PluginListener();
     
     //Plugin support
+    private String Money_Plugin = "none";
     private static iConomy iConomy = null;
     private static BOSEconomy BOSEconomy = null;
+    private static Essentials Essentials = null;
 	private static PermissionHandler Permissions = null;
     
     //Lists
@@ -81,6 +84,7 @@ public class UQuest extends JavaPlugin {
 	private boolean useSQLite = false;
 	private boolean useDefaultUQuest = true;
 	private boolean useBOSEconomy = false;
+	private boolean useEssentials = false;
 	protected int SaveQuestersInfoIntervalInMinutes = 30;
 	protected int questAnnounceInterval = 5;
 	protected int questRewardInterval = 10;
@@ -204,10 +208,11 @@ public class UQuest extends JavaPlugin {
 		 * 		protected int SaveQuestersInfoIntervalInMinutes = 30;
 		 * 
 		 * PluginSupport:
-		 * 		protected boolean useiConomy = true;
+		 * 		private String MoneyPlugin = "none";
+		 * 		>>>protected boolean useiConomy = true;
 		 * 		private boolean usePermissions = true;
-		 * 		private boolean useEssentialsEco = false;
-		 * 		private boolean useBOSEconomy = false;
+		 * 		>>>private boolean useEssentialsEco = false;
+		 * 		>>>private boolean useBOSEconomy = false;
 		 *      private String moneyName = "Monies";
 		 * 
 		 * QuestLevels:
@@ -247,12 +252,20 @@ public class UQuest extends JavaPlugin {
 		SaveQuestersInfoIntervalInMinutes = config.getInt("Database.SaveQuestersInfoIntervalInMinutes", SaveQuestersInfoIntervalInMinutes);
 
 		pluginTimerCheck = config.getInt("PluginSupport.pluginTimerCheck", pluginTimerCheck);
-		useiConomy = config.getBoolean("PluginSupport.useiConomy", useiConomy);
+		//useiConomy = config.getBoolean("PluginSupport.useiConomy", useiConomy);
 		usePermissions = config.getBoolean("PluginSupport.usePermissions", usePermissions);
 		//TODO useEssentialsEco = config.getBoolean("PluginSupport.useEssentialsEco", useEssentialsEco);
-		useBOSEconomy = config.getBoolean("PluginSupport.useBOSEconomy", useBOSEconomy);
+		//useBOSEconomy = config.getBoolean("PluginSupport.useBOSEconomy", useBOSEconomy);
 		moneyName = config.getString("PluginSupport.moneyName", moneyName);
 		
+		//*** money plugin stuff ***//
+		Money_Plugin = config.getString("PluginSupport.MoneyPlugin", "none");
+		if(Money_Plugin.equalsIgnoreCase("iConomy"))
+			this.useiConomy = true;
+		if(Money_Plugin.equalsIgnoreCase("BOSEconomy"))
+			this.useBOSEconomy = true;
+		if(Money_Plugin.equalsIgnoreCase("Essentials"))
+			this.useEssentials = true;
 
 		questLevelInterval = config.getInt("QuestLevels.questLevelInterval", questLevelInterval);
 		scaleQuestLevels = config.getBoolean("QuestLevels.scaleQuestLevels", scaleQuestLevels);
@@ -316,9 +329,14 @@ public class UQuest extends JavaPlugin {
 	  
 	//Makes sure all of our supported plugins are loaded and accounted for
 	public void checkPluginSupport(){
-		checkiCon();
-		checkPerm();
-		checkBOSE();
+		if(this.useiConomy)
+			checkiCon();
+		if(this.usePermissions)
+			checkPerm();
+		if(this.useBOSEconomy)
+			checkBOSE();
+		if(this.useEssentials)
+			checkEssentials();
 	}
 
 	public void checkiCon(){	
@@ -342,6 +360,14 @@ public class UQuest extends JavaPlugin {
 		if (test == false) {
 			log.log(Level.SEVERE, pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
 			this.useBOSEconomy = false;
+		}
+	}
+	
+	public void checkEssentials(){	
+		boolean test = this.useEssentials = (Essentials != null);
+		if (test == false) {
+			log.log(Level.SEVERE, pluginNameBracket() + " Essentials is not loaded. Turning Essentials support off.");
+			this.useEssentials = false;
 		}
 	}
 
@@ -455,6 +481,14 @@ public class UQuest extends JavaPlugin {
 	}
 
 	
+	public static Essentials getEssentials() {
+		return Essentials;
+	}
+
+	public static void setEssentials(Essentials essentials) {
+		Essentials = essentials;
+	}
+
 	//Getters and Setters
 	public ArrayList<Quester> getTheQuesterList() {
 		return theQuesterList;
@@ -667,6 +701,74 @@ public class UQuest extends JavaPlugin {
 
 	public void setMobList_Timer(ScheduledThreadPoolExecutor mobList_Timer) {
 		this.mobList_Timer = mobList_Timer;
+	}
+
+	public Logger getLog() {
+		return log;
+	}
+
+	public void setLog(Logger log) {
+		this.log = log;
+	}
+
+	public static PluginListener getPluginListener() {
+		return PluginListener;
+	}
+
+	public static void setPluginListener(PluginListener pluginListener) {
+		PluginListener = pluginListener;
+	}
+
+	public String getMoney_Plugin() {
+		return Money_Plugin;
+	}
+
+	public void setMoney_Plugin(String money_Plugin) {
+		Money_Plugin = money_Plugin;
+	}
+
+	public boolean isUseEssentials() {
+		return useEssentials;
+	}
+
+	public void setUseEssentials(boolean useEssentials) {
+		this.useEssentials = useEssentials;
+	}
+
+	public int getPluginTimerCheck() {
+		return pluginTimerCheck;
+	}
+
+	public void setPluginTimerCheck(int pluginTimerCheck) {
+		this.pluginTimerCheck = pluginTimerCheck;
+	}
+
+	public String getQuestRewardsDefault() {
+		return questRewardsDefault;
+	}
+
+	public void setQuestRewardsDefault(String questRewardsDefault) {
+		this.questRewardsDefault = questRewardsDefault;
+	}
+
+	public boolean isFirstLoad() {
+		return firstLoad;
+	}
+
+	public void setFirstLoad(boolean firstLoad) {
+		this.firstLoad = firstLoad;
+	}
+
+	public UQuestPlayerListener getPlayerListener() {
+		return playerListener;
+	}
+
+	public UQuestBlockListener getBlockListener() {
+		return blockListener;
+	}
+
+	public UQuestEntityListener getEntityListener() {
+		return entityListener;
 	}
     
 	

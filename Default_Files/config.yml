@@ -17,10 +17,10 @@ Database:
 PluginSupport:
     #The number of seconds after enabling to check for plugin linkage. Make this larger if your having issues with uQuest detecting plugins.
     pluginTimerCheck: 5
-    #Set to true if you want to have support for multiple plugins.
-    useiConomy: true
+    #Set to true if you want to have support for these plugins.
     usePermissions: true
-    useBOSEconomy: false
+    #Options (copy exactly): iConomy, BOSEconomy, Essentials
+    MoneyPlugin: iConomy
     moneyName: Monies
 
 #### QuestLevels:
