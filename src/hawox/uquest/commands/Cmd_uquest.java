@@ -10,8 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.nijiko.coelho.iConomy.iConomy;
-
 public class Cmd_uquest implements CommandExecutor{
 	private final UQuest plugin;
 	
@@ -136,18 +134,7 @@ public class Cmd_uquest implements CommandExecutor{
 						return true;					}
 				}
 				
-				if( (args[0].equalsIgnoreCase("drop")) ){
-/*					boolean processDrop = false;
-					
-					if(plugin.isUsePermissions() == true){
-						if(UQuest.Permissions.has(player, "uQuest.CanDropQuest")){
-							processDrop = true;
-						}
-					}else{
-						//no permission support so we let everyone use it!
-						processDrop = true;
-					}
-					if(processDrop == true){*/
+				if(args[0].equalsIgnoreCase("drop")) {
 					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.getPermissions().has(player, "uQuest.CanDropQuest")) ) ){
 						//do they even have a quest?
 						if(quester.getQuestID() != -1){
@@ -156,22 +143,16 @@ public class Cmd_uquest implements CommandExecutor{
 							}else{
 								//can drop quest check money
 								boolean canDropQuest = true;
-								if(plugin.getQuestInteraction().isUseiConomy() || plugin.getQuestInteraction().isUseBOSEconomy() ){
-									if(plugin.getQuestInteraction().getMoney(player) >= plugin.getQuestInteraction().getDropQuestCharge()){
-										//has enough money so take it away here
-										plugin.getQuestInteraction().addMoney(player, -plugin.getQuestInteraction().getDropQuestCharge());
+								int dropCharge = plugin.getQuestInteraction().getDropQuestCharge();
+								if(plugin.isUseBOSEconomy() || plugin.isUseEssentials() || plugin.isUseiConomy()){
+									//Enough money?
+									if(plugin.getQuestInteraction().hasEnoughMoney(player, dropCharge)){
+										plugin.getQuestInteraction().addMoney(player, -dropCharge);
 										canDropQuest = true;
 									}else{
-										if(plugin.getQuestInteraction().isUseiConomy()){
-											UQuest.getiConomy();
-											player.sendMessage(ChatColor.RED + "You don't have enough money to drop a quest! You need " + plugin.getQuestInteraction().getDropQuestCharge() + " " + iConomy.getBank().getCurrency() + "!");
-											canDropQuest = false;
-											return true;
-										}else if(plugin.getQuestInteraction().isUseBOSEconomy()){
-											player.sendMessage(ChatColor.RED + "You don't have enough money to drop a quest! You need " + UQuest.getBOSEconomy().getMoneyNamePlural() + "!");
-											canDropQuest = false;
-											return true;
-										}
+										player.sendMessage(ChatColor.RED + "You don't have enough money to drop a quest! You need " + dropCharge + " " + plugin.getMoneyName() + "!");
+										canDropQuest = false;
+										return true;
 									}
 								}
 								if(canDropQuest == true){

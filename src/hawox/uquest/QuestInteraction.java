@@ -385,6 +385,10 @@ final public class QuestInteraction {
 			user.setMoney(toWhat);
 		}
 	}
+	
+	public boolean hasEnoughMoney(Player player, int needed){
+		return(this.getMoney(player) >= needed);
+	}
 
 	public void addMoney(Player player, int addWhat, boolean showText) {
 		if(plugin.isUseBOSEconomy() || plugin.isUseEssentials() || plugin.isUseiConomy()){
