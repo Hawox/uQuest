@@ -34,6 +34,8 @@ public class Quester implements Serializable{
 	HashMap<String,Integer> questTracker = new HashMap<String,Integer>();
 	int questLevel;
 	
+	//int questsFailed; TODO for a later time.
+	
 	public Quester(String[] questerInfoInString, Player player) {
 		//this.plugin = plugin;
 		
@@ -41,6 +43,7 @@ public class Quester implements Serializable{
 		this.questID = Integer.parseInt(questerInfoInString[0]);
 		this.questsCompleted = Integer.parseInt(questerInfoInString[1]);
 		this.moneyEarnedFromQuests = Integer.parseInt(questerInfoInString[2]);
+		//this.questsFailed 
 		
 		HashMap<String,Integer> tracker = new HashMap<String,Integer>();
 		/*

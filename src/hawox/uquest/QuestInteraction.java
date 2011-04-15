@@ -394,7 +394,9 @@ final public class QuestInteraction {
 			}
 			setMoney(player, balance + addWhat);
 			Quester quester = getQuester(player);
-			quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
+			//Change this so we don't count money lost as money earned
+			if(addWhat > 0)
+				quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
 			if(showText == true){
 				player.sendMessage(ChatColor.AQUA + "**Your new balance is: "
 						+ getMoney(player) + " " + /*plugin.getiConomy().getBank().getCurrency()*/ plugin.getMoneyName());
@@ -412,7 +414,8 @@ final public class QuestInteraction {
 			}
 			setMoney(player, balance + addWhat);
 			Quester quester = getQuester(player);
-			quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
+			if(addWhat > 0)
+				quester.setMoneyEarnedFromQuests(quester.getMoneyEarnedFromQuests() + addWhat);
 			if(showText == true){
 				player.sendMessage(ChatColor.AQUA + "**Your new balance is: "
 						+ getMoney(player) + " " + /*plugin.getTheBOSEconomy().getMoneyNamePlural()*/ plugin.getMoneyName());

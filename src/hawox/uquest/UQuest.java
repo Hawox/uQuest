@@ -296,7 +296,7 @@ public class UQuest extends JavaPlugin {
 		getDataFolder().setWritable(true);
 	    getDataFolder().setExecutable(true);
 		extractFile("config.yml");
-		extractFile("new.Quests.yml");
+		//extractFile("new.Quests.yml");
 		extractFile("Quests.yml");
 		extractFile("uQuest_Players.txt");
 		extractFile("uQuestQuesters");
