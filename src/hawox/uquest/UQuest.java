@@ -342,6 +342,7 @@ public class UQuest extends JavaPlugin {
 		boolean test = this.useiConomy = (iConomy != null);
 		if (test == false) {
 			log.log(Level.SEVERE, pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
+			log.log(Level.SEVERE, pluginNameBracket() + " If this is not correct, change the config 'pluginTimerCheck' to a higher value.");
 			this.useiConomy = false;
 		}
 	}
@@ -350,6 +351,7 @@ public class UQuest extends JavaPlugin {
 		boolean test = this.usePermissions = (Permissions != null);
 		if (test == false) {
 			log.log(Level.SEVERE, pluginNameBracket() + " Permissions is not loaded. Turning Permissions support off.");
+			log.log(Level.SEVERE, pluginNameBracket() + " If this is not correct, change the config 'pluginTimerCheck' to a higher value.");
 			this.usePermissions = false;
 		}
 	}
@@ -358,6 +360,7 @@ public class UQuest extends JavaPlugin {
 		boolean test = this.useBOSEconomy = (BOSEconomy != null);
 		if (test == false) {
 			log.log(Level.SEVERE, pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
+			log.log(Level.SEVERE, pluginNameBracket() + " If this is not correct, change the config 'pluginTimerCheck' to a higher value.");
 			this.useBOSEconomy = false;
 		}
 	}

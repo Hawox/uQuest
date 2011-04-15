@@ -174,7 +174,7 @@ public class LoadedQuest {
 
 		quester.setQuestsCompleted(quester.getQuestsCompleted() + 1);
 		
-		//TODO Reward Stuff
+		//Reward Stuff
 		for(Reward reward : this.rewards)
 			reward.giveReward(plugin, player);
 		

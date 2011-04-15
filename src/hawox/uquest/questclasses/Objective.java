@@ -144,6 +144,14 @@ public class Objective{
 			returnMe = "   " + ChatColor.YELLOW + Integer.toString(howMuch) + "/" + this.amountNeeded + " " + this.displayname;
 		}else{
 			returnMe = "   " + ChatColor.AQUA + Integer.toString(howMuch)  + ChatColor.WHITE + "/" + this.amountNeeded + " " + ChatColor.GRAY + this.displayname;
+			//location
+			if(this.locationNeeded != null){
+				//world:x:y:z
+				String[] loc = this.locationNeeded.split(":");
+				String[] give = this.locationGiveRange.split(":");
+				//TODO Find a better way to output this...
+				returnMe += "\n     @: " + loc[0] + " " + loc[1] + "," + loc[2] + "," + loc[3] + " Radius: " + give[0] + "," + give[1] + "," + give[2];
+			}
 		}
 		return returnMe;
 
@@ -225,23 +233,6 @@ public class Objective{
 			}
 		}
 	}
-
-	//Checks to see if the location given is in give range
-	/* TODO: On hold. Just realized Double may have the best solution for this!!!
-	public boolean isLocationInGiveRange(Location location){
-		double givenX = location.getX();
-		double givenY = location.getY();
-		double givenZ = location.getZ();
-		
-		//check x
-		if(givenX)
-		//check y
-		
-		//check z
-
-	}*/
-	
-	
 	
 	//Generic getters and setters
 	public String getType() {
