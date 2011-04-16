@@ -248,12 +248,11 @@ public class QuestLoader {
 			
 			String returnMe = (String) Point.get("World");
 			returnMe += ":";
-			returnMe = Integer.toString((Integer)Point.get("X"));
+			returnMe += Integer.toString((Integer)Point.get("X"));
 			returnMe += ":";
 			returnMe += Integer.toString((Integer)Point.get("Y"));
 			returnMe += ":";
 			returnMe += Integer.toString((Integer)Point.get("Z"));
-
 			return returnMe;
 		}
 		

@@ -67,14 +67,14 @@ public class Objective{
 			Location neededLocation = this.pointToLocation(plugin);
 
 			//Just quit if it's not the right world!
-			if(!(pointCheck.getWorld().equals(neededLocation))){
+			if(!(pointCheck.getWorld() == neededLocation.getWorld())){
 				return false;
 			}
 			//x,y,z
 			String[] giveSplit = this.locationGiveRange.split(":");
-			int[] checkX = { (Math.round(Math.round(pointCheck.getX())) - Integer.parseInt(giveSplit[0])),(Math.round(Math.round(pointCheck.getX())) + Integer.parseInt(giveSplit[0])) };
-			int[] checkY = { (Math.round(Math.round(pointCheck.getY())) - Integer.parseInt(giveSplit[1])),(Math.round(Math.round(pointCheck.getY())) + Integer.parseInt(giveSplit[1])) };
-			int[] checkZ = { (Math.round(Math.round(pointCheck.getZ())) - Integer.parseInt(giveSplit[2])),(Math.round(Math.round(pointCheck.getZ())) + Integer.parseInt(giveSplit[2])) };
+			int[] checkX = { (Math.round(Math.round(neededLocation.getX())) - Integer.parseInt(giveSplit[0])),(Math.round(Math.round(neededLocation.getX())) + Integer.parseInt(giveSplit[0])) };
+			int[] checkY = { (Math.round(Math.round(neededLocation.getY())) - Integer.parseInt(giveSplit[1])),(Math.round(Math.round(neededLocation.getY())) + Integer.parseInt(giveSplit[1])) };
+			int[] checkZ = { (Math.round(Math.round(neededLocation.getZ())) - Integer.parseInt(giveSplit[2])),(Math.round(Math.round(neededLocation.getZ())) + Integer.parseInt(giveSplit[2])) };
 
 			//check x
 			if( (pointCheck.getX() >= checkX[0]) && (pointCheck.getX() <= checkX[1]) ){
@@ -150,7 +150,7 @@ public class Objective{
 				String[] loc = this.locationNeeded.split(":");
 				String[] give = this.locationGiveRange.split(":");
 				//TODO Find a better way to output this...
-				returnMe += "\n     @: " + loc[0] + " " + loc[1] + "," + loc[2] + "," + loc[3] + " Radius: " + give[0] + "," + give[1] + "," + give[2];
+				returnMe += "\n\n     @: " + loc[0] + " " + loc[1] + "," + loc[2] + "," + loc[3] + " Radius: " + give[0] + "," + give[1] + "," + give[2];
 			}
 		}
 		return returnMe;

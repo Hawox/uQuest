@@ -66,7 +66,8 @@ public class Cmd_uquest implements CommandExecutor{
 				Quester quester = plugin.getQuestInteraction().getQuester(player);
 				
 				if( (  (args[0].equalsIgnoreCase("?")) ||  (args[0].equalsIgnoreCase("help")) ) ){
-					displayCommands(player);
+//					displayCommands(player);
+					return true;
 				}
 				
 				/* FIXME Ranking Stuff goes here */
@@ -179,7 +180,8 @@ public class Cmd_uquest implements CommandExecutor{
 				}
 			}
 			catch(ArrayIndexOutOfBoundsException aiobe){
-				displayCommands(player);
+//				displayCommands(player);
+				return true;
 				}	
 			//}
 			//end of /questme prefix
@@ -189,7 +191,7 @@ public class Cmd_uquest implements CommandExecutor{
 		return true;
 	}
 	
-	public void displayCommands(Player player){
+/*	public void displayCommands(Player player){
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "uQuest is a simple random quest plugin. How to use it:");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "You can also use /quest or /q instead of /uquest");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "-> Commands:");
@@ -201,7 +203,7 @@ public class Cmd_uquest implements CommandExecutor{
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest info" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Resends you your quest info/progress");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest drop" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Drops your current quest");
 		//player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest top #" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Shows you the top 5 questers");
-	}
+	}*/
 }
 
 

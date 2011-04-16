@@ -79,18 +79,10 @@ public class LoadedQuest {
 				player.sendMessage(ChatColor.RED + "None");
 			}
 		}
-		
-		/*
-		if(this.type.equalsIgnoreCase("gather")){
-			player.sendMessage(ChatColor.BLUE  + "  *Progress: " + Integer.toString(plugin.getQuestInteraction().countItems(player,Integer.parseInt(this.objective))) + "/" + this.amountNeeded + " " + ChatColor.GRAY + this.materialName);
-		}
-		if( (this.type.equalsIgnoreCase("blockdestroy")) || this.type.equalsIgnoreCase("blockdamage") || this.type.equalsIgnoreCase("blockplace") || this.type.equalsIgnoreCase("kill")){
-			player.sendMessage(ChatColor.BLUE + "  *Progress: " + Integer.toString(quester.questTracker) + "/" + this.amountNeeded + " " + ChatColor.GRAY + this.materialName);
-		}*/
 	}
 	
 	public boolean doneCheck(UQuest plugin, Player player){
-//		try{
+		try{
 			Quester quester = plugin.getQuestInteraction().getQuester(player);
 			int doneAmount = 0;
 			for(Objective objective : this.objectives){
@@ -103,9 +95,10 @@ public class LoadedQuest {
 				player.sendMessage(ChatColor.RED + "You only have " + ChatColor.stripColor(Integer.toString(doneAmount)) + " objectives done!");
 				return false;
 			}
-//		}catch(ArrayIndexOutOfBoundsException aiobe){
-//			System.err.println("[Hawox's uQuest]:LoadedQuest:doneCheck:ArrayIndexOutOfBoundsException: Player didn't have a correct quest tracker.");
-//		}
+		}catch(ArrayIndexOutOfBoundsException aiobe){
+			System.err.println("[Hawox's uQuest]:LoadedQuest:doneCheck:ArrayIndexOutOfBoundsException: Player didn't have a correct quest tracker.");
+			return false;
+		}
 	}
 	
 	public boolean checkObjective(UQuest plugin, Location point, String type, String name){
