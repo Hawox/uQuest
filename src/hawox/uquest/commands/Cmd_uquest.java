@@ -50,7 +50,7 @@ public class Cmd_uquest implements CommandExecutor{
 		try{
 			if(plugin.isUsePermissions() == true){
 				if(UQuest.getPermissions().has(player, "uQuest.CanQuest")){
-					System.err.println(plugin.pluginNameBracket() + " The node 'uQuest.CanQuest' is no longer used. Update this!");
+					//System.err.println(plugin.pluginNameBracket() + " The node 'uQuest.CanQuest' is no longer used. Update this!");
 				}
 			}
 		}catch(NoClassDefFoundError ncdfe){
@@ -180,7 +180,7 @@ public class Cmd_uquest implements CommandExecutor{
 				}
 			}
 			catch(ArrayIndexOutOfBoundsException aiobe){
-//				displayCommands(player);
+				displayCommands(player);
 				return true;
 				}	
 			//}
@@ -191,7 +191,7 @@ public class Cmd_uquest implements CommandExecutor{
 		return true;
 	}
 	
-/*	public void displayCommands(Player player){
+	public void displayCommands(Player player){
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "uQuest is a simple random quest plugin. How to use it:");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "You can also use /quest or /q instead of /uquest");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "-> Commands:");
@@ -203,7 +203,7 @@ public class Cmd_uquest implements CommandExecutor{
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest info" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Resends you your quest info/progress");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest drop" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Drops your current quest");
 		//player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest top #" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Shows you the top 5 questers");
-	}*/
+	}
 }
 
 
