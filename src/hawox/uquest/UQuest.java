@@ -154,6 +154,13 @@ public class UQuest extends JavaPlugin {
 		// load quests into array
 		theQuestsLoadAllIntoArray();
 		
+		//Make sure we have quests loaded!
+		if(this.theQuests.isEmpty()){
+			System.err.println("\n\n\n" + pluginNameBracket() + " You have an empty quest list!\n Disabling plugin.\n\n\n");
+			Server.getPluginManager().disablePlugin(this);
+			return; //exit out of our enable method
+		}
+		
 		//Get the DB fired up
 		if(isUseSQLite() == true){
 			this.setDB(new SqLiteKeyValStor<Quester>("questers", "plugins/uQuest/uQuestQuesters"));

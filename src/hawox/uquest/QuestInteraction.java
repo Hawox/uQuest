@@ -39,7 +39,12 @@ final public class QuestInteraction {
 		Quester quester = getQuester(player);
 		//check if the player already has an active quest or not (-1 is no active quest)
 		if( this.getCurrentQuest(player,false) == null ){
-			quester.giveQuest(questNumber, plugin.getTheQuests().get(questNumber));
+			try{
+				quester.giveQuest(questNumber, plugin.getTheQuests().get(questNumber));
+			}catch(IndexOutOfBoundsException iobe){ 
+				System.err.println("\n\n\n" + plugin.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
+				plugin.getServer().getPluginManager().disablePlugin(plugin);
+			}
 			//get their quest info again to output stuffs
 			this.getCurrentQuest(player,this.isScaleQuestLevels()).printInfo(this.plugin, player);
 			return true;
