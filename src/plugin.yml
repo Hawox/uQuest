@@ -3,8 +3,7 @@ main: hawox.uquest.UQuest
 version: 1.13
 author: Hawox
 description: >
-             Lightweight but heavily customizable quest plugin.
-             Gets quests anywhere with a simple /uquest
+             Heavily customizable quest plugin. Gets quests anywhere with a simple /uquest
 commands:
   uquest:
     description: All the quests commands
