@@ -1,7 +1,5 @@
 package hawox.uquest;
 
-import java.util.concurrent.TimeUnit;
-
 import hawox.uquest.questclasses.LoadedQuest;
 
 import org.bukkit.entity.Chicken;
@@ -19,9 +17,11 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
 /**
@@ -32,8 +32,33 @@ public class UQuestEntityListener extends EntityListener {
 
     public UQuestEntityListener(UQuest instance) {
         plugin = instance;
-    }
+    }  
     
+    
+	/*
+	 * Trying a new way of tracking monster deaths. When a player damages a mob we tag that entity id as theirs.
+	 * Now when that entity dies, whatever player is tagged as hitting it last will get the kill. Also, if this
+	 * works the way I hope, I don't have to purge a monster killed id list.
+	 */
+    @Override
+    public void onEntityDeath(EntityDeathEvent event){
+    	//check if the entity is tagged
+    	Entity dead = event.getEntity();
+    	int id = dead.getEntityId();
+    	if(plugin.getMobsTagged().containsKey(id)){
+    		Player killer = plugin.getServer().getPlayer(plugin.getMobsTagged().get(id));
+    		
+    		if(dead instanceof Creature)
+    		    playerKilledCreature(killer, (Creature) dead);
+    		
+    		if(dead instanceof Player)
+				playerKilledPlayer(killer, (Player) dead);
+
+			//death counted, remove from tagged list
+		    plugin.getMobsTagged().remove(id);
+    	}
+    		
+    }
     
     @Override
     public void onEntityDamage(EntityDamageEvent event){
@@ -43,44 +68,26 @@ public class UQuestEntityListener extends EntityListener {
     	Creature creature = null;
     	Player damagedPlayer = null;
     	Player player = null;
+    	
     	if (event instanceof EntityDamageByEntityEvent)
           damager = ((EntityDamageByEntityEvent)event).getDamager();
+    	
+		if(damager instanceof Player)
+    		player = (Player) damager;
+		
     	if(event.getEntity() instanceof Creature)
     		creature = (Creature)event.getEntity();
-    	if( (creature != null) && (damager != null)){
-    		if(damager instanceof Player)
-        		player = (Player) damager;
-    		if(player != null){
-    			//At this point a player has damaged a monster
-    			if(event.getDamage() >= creature.getHealth()){
-    				//for some reason mob deaths count multiple times if killed the right way. Added this list so we only count it once!
-    				String id = Integer.toString(creature.getEntityId());
-    				if(!(plugin.mobsKilled.contains(id))){
-    					plugin.mobsKilled.add(id);
-        				playerKilledCreature(player, creature);
-    				}
-    			}
-    		}
-    	}
-    	//See if it's a player killed
+    	
     	if(event.getEntity() instanceof Player)
     		damagedPlayer = (Player)event.getEntity();
-    	if( (damagedPlayer != null) && (damager != null)){
-    		if(damager instanceof Player)
-        		player = (Player) damager;
-    		if(player != null){
-    			//At this point a player has damaged a player
-    			if(event.getDamage() >= damagedPlayer.getHealth()){
-    				//for some reason mob deaths count multiple times if killed the right way. Added this list so we only count it once!
-    				String id = Integer.toString(damagedPlayer.getEntityId());
-    				if(!(plugin.mobsKilled.contains(id))){
-    					addToMobList(id);
-        				playerKilledPlayer(player, damagedPlayer);
-    				}
-    			}
-    		}
+    	
+    	if( (player != null) && ( (creature != null) || (damagedPlayer != null) )     ){
+    		//We have a player and a creature/damaged-player
+    		System.err.println("TAGGED YOUR IT");
+    		plugin.getMobsTagged().put(creature.getEntityId(), player.getName());
     	}
     }
+    
     //skeleton, pig, sheep, cow, chicken, squid, spider, zombie, creeper, slime, ghast, giant, zombie pigman 
     public void playerKilledCreature(Player player, Creature creature){
     	if(plugin.isEnabled() == true){
@@ -131,6 +138,9 @@ public class UQuestEntityListener extends EntityListener {
     				if( (creature instanceof PigZombie) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","pigzombie"))){
     					quester.addToTracker(plugin, "pigzombie", 1);
     				}
+    				if( (creature instanceof Wolf) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","wolf"))){
+    					quester.addToTracker(plugin, "wolf", 1);
+    				}
 //    			}
     			if(plugin.isUseSQLite() == true){
         			plugin.getDB().put(player.getName(), quester);
@@ -163,7 +173,7 @@ public class UQuestEntityListener extends EntityListener {
     
     
     //Add's ID to the list and then removes it after a set time
-    public void addToMobList(String id){
+/*    public void addToMobList(String id){
 		if(!(plugin.mobsKilled.contains(id))){
 			plugin.mobsKilled.add(id);
 			plugin.getMobList_Timer().schedule(new Runnable() {
@@ -176,5 +186,5 @@ public class UQuestEntityListener extends EntityListener {
 			}, 1, TimeUnit.MINUTES);
 		}
     	
-    }
+    }*/
 }

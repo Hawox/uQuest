@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -63,7 +64,8 @@ public class UQuest extends JavaPlugin {
 	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();				//Loaded Quests
 	protected HashSet<String> canNotDrop = new HashSet<String>();							//Players on quest drop cool down
 	protected ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();			//Players on quest drop cool down
-	protected ArrayList<String> mobsKilled = new ArrayList<String>();						//Mob ID's counted as dead
+//	protected ArrayList<String> mobsKilled = new ArrayList<String>();						//Mob ID's counted as dead
+	protected HashMap<Integer,String> mobsTagged = new HashMap<Integer,String>();						//Mob ID's tagged by players
 	protected HashSet<String> playersLoggedInSinceBoot = new HashSet<String>();				//Names of players that have logged on since the server booted
 	
 	//Timers
@@ -207,6 +209,7 @@ public class UQuest extends JavaPlugin {
 		
 		// Entity Stuff
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
 	}
 	
 	public void readConfig() {
@@ -697,13 +700,13 @@ public class UQuest extends JavaPlugin {
 		this.canNotDropRemoveTimer = canNotDropRemoveTimer;
 	}
 
-	public ArrayList<String> getMobsKilled() {
+/*	public ArrayList<String> getMobsKilled() {
 		return mobsKilled;
 	}
 
 	public void setMobsKilled(ArrayList<String> mobsKilled) {
 		this.mobsKilled = mobsKilled;
-	}
+	}*/
 
 	public void setPdfFile(PluginDescriptionFile pdfFile) {
 		this.pdfFile = pdfFile;
@@ -811,6 +814,14 @@ public class UQuest extends JavaPlugin {
 
 	public void setTheQuestersRanked(ArrayList<Quester> theQuestersRanked) {
 		this.theQuestersRanked = theQuestersRanked;
+	}
+
+	public HashMap<Integer, String> getMobsTagged() {
+		return mobsTagged;
+	}
+
+	public void setMobsTagged(HashMap<Integer, String> mobsTagged) {
+		this.mobsTagged = mobsTagged;
 	}
     
 	
