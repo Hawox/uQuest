@@ -26,25 +26,6 @@ public class Cmd_uquest implements CommandExecutor{
 				sender.sendMessage(plugin.pluginNameBracket() + " This is not ment for console use silly!");
 				return true;
 			}
-		//should make this a place at this point
-		
-		/*boolean processQuest = false;
-		
-		try{
-		if(plugin.isUsePermissions() == true){
-			if(UQuest.Permissions.has(player, "uQuest.CanQuest")){
-				processQuest = true;
-			}
-		}else{
-			//no permission support so we let everyone use it!
-			processQuest = true;
-		}
-		}catch(NoClassDefFoundError ncdfe){
-			processQuest = true;
-			//they don't have permissions so disable it plugin wide
-			plugin.setUsePermissions(false);
-			System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
-		}*/
 		
 		//This is now a permissions communication check as well as an update notice.
 		try{
@@ -66,11 +47,20 @@ public class Cmd_uquest implements CommandExecutor{
 				Quester quester = plugin.getQuestInteraction().getQuester(player);
 				
 				if( (  (args[0].equalsIgnoreCase("?")) ||  (args[0].equalsIgnoreCase("help")) ) ){
-//					displayCommands(player);
+					displayCommands(player);
 					return true;
 				}
 				
-				/* FIXME Ranking Stuff goes here */
+				if(args[0].equalsIgnoreCase("top")){
+					try{
+						plugin.getQuestInteraction().listRankings(player, Integer.parseInt(args[1]));
+					}catch(ArrayIndexOutOfBoundsException aiobe){
+						player.sendMessage(ChatColor.RED + "You forgot to add a number! Ex: /q top 5");
+					}catch(NumberFormatException nfe){
+						player.sendMessage(ChatColor.RED + "That's not a number! :" + ChatColor.WHITE + args[1]);
+					}
+					return true;
+				}
 					
 				if( (args[0].equalsIgnoreCase("give")) ){
 					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.getPermissions().has(player, "uQuest.CanQuest.give")) ) ){
@@ -202,8 +192,9 @@ public class Cmd_uquest implements CommandExecutor{
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest done" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Attempts to turn in your current quest");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest info" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Resends you your quest info/progress");
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest drop" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Drops your current quest");
-		//player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest top #" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Shows you the top 5 questers");
+		player.sendMessage(ChatColor.LIGHT_PURPLE + "   ->" + ChatColor.GREEN + "/uquest top #" + ChatColor.WHITE + "  |  " + ChatColor.BLUE + "Shows you the top 5 questers");
 	}
+	
 }
 
 

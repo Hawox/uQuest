@@ -58,11 +58,13 @@ public class UQuest extends JavaPlugin {
 	private static PermissionHandler Permissions = null;
     
     //Lists
-	protected ArrayList<Quester> theQuesterList = new ArrayList<Quester>();					//Loaded players
+	protected HashSet<Quester> theQuesterList = new HashSet<Quester>();						//Loaded players
+	protected ArrayList<Quester>  theQuestersRanked = new ArrayList<Quester>();				//Loaded players sorted by rank
 	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();				//Loaded Quests
 	protected HashSet<String> canNotDrop = new HashSet<String>();							//Players on quest drop cool down
 	protected ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();			//Players on quest drop cool down
 	protected ArrayList<String> mobsKilled = new ArrayList<String>();						//Mob ID's counted as dead
+	protected HashSet<String> playersLoggedInSinceBoot = new HashSet<String>();				//Names of players that have logged on since the server booted
 	
 	//Timers
 	private ScheduledThreadPoolExecutor mobList_Timer = new ScheduledThreadPoolExecutor(50); //Resets mob/player id's so they can be killed again
@@ -407,9 +409,8 @@ public class UQuest extends JavaPlugin {
 					"[Hawox uQuest] Saving all players quests to file...");
 		}
 		System.out.println("[Hawox uQuest] Saving all players quests to file...");
-		for (int i = 0; i < theQuesterList.size(); i++) {
-			questPlayerStorage.setString(theQuesterList.get(i).theQuestersName, theQuesterList.get(i).toString());
-		}
+		for(Quester q : theQuesterList)
+			questPlayerStorage.setString(q.theQuestersName, q.toString());
 		if (broadcastSaving == true) {
 			getServer().broadcastMessage("[Hawox uQuest] Done saving.");
 		}
@@ -417,7 +418,7 @@ public class UQuest extends JavaPlugin {
 		return true;
 	}
 
-	public boolean placePlayerIntoList(Player player) {
+	public void placePlayerIntoList(Player player) {
 		// check if player is already in the quester list
 		boolean wasInList = false;
 		for (Quester quester : theQuesterList) {
@@ -426,12 +427,20 @@ public class UQuest extends JavaPlugin {
 			}
 		}
 		if (wasInList == false) { // needs to be added
+			Quester q = null;
 			if (!(questPlayerStorage.keyExists(player.getName()))) {
 				questPlayerStorage.setString(player.getName(),questDefaultPlayer);
-				theQuesterList.add(new Quester(questDefaultPlayer.split(":"), player));
-				return true;
+				q = new Quester(questDefaultPlayer.split(":"), player);
 			}
-			theQuesterList.add(new Quester(questPlayerStorage.getString(player.getName()).split(":"), player));
+			q = new Quester(questPlayerStorage.getString(player.getName()).split(":"), player);
+			theQuesterList.add(q);
+			placePlayerIntoRankedList(q);
+		}
+	}
+	
+	public boolean placePlayerIntoRankedList(Quester q) {
+		if (!(theQuestersRanked.contains(q))) {
+			theQuestersRanked.add(q);
 			return true;
 		}
 		return false;
@@ -499,16 +508,16 @@ public class UQuest extends JavaPlugin {
 	}
 
 	//Getters and Setters
-	public ArrayList<Quester> getTheQuesterList() {
+	public ArrayList<LoadedQuest> getTheQuests() {
+		return theQuests;
+	}
+
+	public HashSet<Quester> getTheQuesterList() {
 		return theQuesterList;
 	}
 
-	public void setTheQuesterList(ArrayList<Quester> theQuesterList) {
+	public void setTheQuesterList(HashSet<Quester> theQuesterList) {
 		this.theQuesterList = theQuesterList;
-	}
-
-	public ArrayList<LoadedQuest> getTheQuests() {
-		return theQuests;
 	}
 
 	public void setTheQuests(ArrayList<LoadedQuest> theQuests) {
@@ -786,6 +795,22 @@ public class UQuest extends JavaPlugin {
 
 	public UQuestEntityListener getEntityListener() {
 		return entityListener;
+	}
+
+	public HashSet<String> getPlayersLoggedInSinceBoot() {
+		return playersLoggedInSinceBoot;
+	}
+
+	public void setPlayersLoggedInSinceBoot(HashSet<String> playersLoggedInSinceBoot) {
+		this.playersLoggedInSinceBoot = playersLoggedInSinceBoot;
+	}
+
+	public ArrayList<Quester> getTheQuestersRanked() {
+		return theQuestersRanked;
+	}
+
+	public void setTheQuestersRanked(ArrayList<Quester> theQuestersRanked) {
+		this.theQuestersRanked = theQuestersRanked;
 	}
     
 	

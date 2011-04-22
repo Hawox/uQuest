@@ -2,6 +2,8 @@ package hawox.uquest;
 
 import hawox.uquest.questclasses.CurrentQuest;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -201,6 +203,8 @@ final public class QuestInteraction {
 		if(plugin.isUseiConomy() == true){
 			player.sendMessage("Total " + plugin.getiConomy().getBank().getCurrency() + " received: " + quester.getMoneyEarnedFromQuests());
 		}
+		//get their rank!
+		player.sendMessage("Rank: " + findPlayerRanking(player.getName()));
 	}
 	
 	/*
@@ -421,6 +425,50 @@ final public class QuestInteraction {
 	
 	
 	
+	/**
+	 * Ranking Methods
+	 */
+	
+	public void listRankings(Player player, int amount){
+		//Since we already have a list of all the questers that have logged on since server boot, just need to sort it!
+		Collections.sort(plugin.getTheQuestersRanked(),new rankSortComparator());
+		
+		//we don't want to go over the lists size
+		if(plugin.getTheQuestersRanked().size() < amount)
+			amount = plugin.getTheQuestersRanked().size();
+		player.sendMessage(ChatColor.DARK_BLUE + "******Best Online Questers******");
+		for(int i=0; i <amount; i++){
+			Quester currentQuester = plugin.getTheQuestersRanked().get(i);
+			player.sendMessage(" *" + (i+1) + ".) " + ChatColor.DARK_GREEN + currentQuester.getTheQuestersName() + ChatColor.GRAY + " | Quests:" + currentQuester.getQuestsCompleted() + " | Earnings:" + currentQuester.getMoneyEarnedFromQuests());
+		}
+	}
+	
+	//find the rank of a specific player
+	public int findPlayerRanking(String name){
+		//Since we already have a list of all the questers that have logged on since server boot, just need to sort it!
+		Collections.sort(plugin.getTheQuestersRanked(),new rankSortComparator());
+		int position = 1;
+		for(Quester q : plugin.getTheQuestersRanked()){
+			if(q.getTheQuestersName().equalsIgnoreCase(name)){
+				return position;
+			}else{
+				position++;
+			}
+		}
+		return -1; //-1 is error! =o
+	}
+	
+	public class rankSortComparator implements Comparator<Quester>{
+		@Override
+		public int compare(Quester a, Quester b) {
+			int returnMe = 0;
+			returnMe = a.getQuestsCompleted() - b.getQuestsCompleted();
+			//we want a tiebreaker if they have the same number of quests done. We use money gained!
+			if(returnMe == 0)
+				returnMe = a.getMoneyEarnedFromQuests() - b.getMoneyEarnedFromQuests();
+			return returnMe;
+		}
+	}
 	
 	
 	

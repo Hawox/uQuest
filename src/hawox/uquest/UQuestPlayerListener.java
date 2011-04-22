@@ -18,6 +18,10 @@ public class UQuestPlayerListener extends PlayerListener {
     @Override
     public void onPlayerJoin(PlayerJoinEvent event){
     	Player player = event.getPlayer();
+    	//Keep track of all the players that have logged in
+    	if(!(plugin.getPlayersLoggedInSinceBoot().contains(player.getName())))
+    		plugin.getPlayersLoggedInSinceBoot().add(player.getName());
+    	
     	// check if the player is registered in the questme's file
     	if(plugin.isUseSQLite()){
     		if(plugin.getDB().get(player.getName()) == null){
@@ -25,6 +29,11 @@ public class UQuestPlayerListener extends PlayerListener {
     			plugin.getDB().put(player.getName(), new Quester(plugin.getQuestDefaultPlayer().split(":"), player));
     			System.out.println(plugin.pluginNameBracket() + " Player added to SQLite DB! : " + player.getName());
     		}
+    		//we still need to add them to the list for ranking means
+    		Quester q = plugin.getDB().get(player.getName());
+    		if(!(plugin.getTheQuesterList().contains(q)))
+    			plugin.getTheQuesterList().add(q);
+    		plugin.placePlayerIntoRankedList(q);
     	}else{
     		plugin.placePlayerIntoList(player);
     	}
