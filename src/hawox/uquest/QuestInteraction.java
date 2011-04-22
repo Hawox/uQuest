@@ -466,6 +466,8 @@ final public class QuestInteraction {
 			//we want a tiebreaker if they have the same number of quests done. We use money gained!
 			if(returnMe == 0)
 				returnMe = a.getMoneyEarnedFromQuests() - b.getMoneyEarnedFromQuests();
+			//Currently this has it sorting for lowest to highest which is not what we want at all. Fix!
+			returnMe *= -1;
 			return returnMe;
 		}
 	}

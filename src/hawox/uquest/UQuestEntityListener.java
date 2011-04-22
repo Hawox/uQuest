@@ -83,7 +83,6 @@ public class UQuestEntityListener extends EntityListener {
     	
     	if( (player != null) && ( (creature != null) || (damagedPlayer != null) )     ){
     		//We have a player and a creature/damaged-player
-    		System.err.println("TAGGED YOUR IT");
     		plugin.getMobsTagged().put(creature.getEntityId(), player.getName());
     	}
     }
