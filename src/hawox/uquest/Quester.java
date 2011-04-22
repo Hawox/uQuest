@@ -48,12 +48,6 @@ public class Quester implements Serializable{
 		//this.questsFailed 
 		
 		HashMap<String,Integer> tracker = new HashMap<String,Integer>();
-		/*
-		 * 58.0~
-17.5~
-270.0~
-272.0
-		 */
 		try{
 			for(String info : questerInfoInString[3].split("~")){
 

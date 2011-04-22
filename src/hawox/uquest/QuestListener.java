@@ -4,6 +4,7 @@ import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
+import hawox.uquest.interfaceevents.QuestDropEvent;
 import hawox.uquest.interfaceevents.QuestFinishEvent;
 import hawox.uquest.interfaceevents.QuestGetEvent;
 import hawox.uquest.interfaceevents.TrackerAddEvent;
@@ -11,7 +12,7 @@ import hawox.uquest.interfaceevents.TrackerAddEvent;
 public class QuestListener extends CustomEventListener
  implements Listener{
 	
-	public void onTrackerAdd(TrackerAddEvent event){	
+	public void onTrackerAdd(TrackerAddEvent event){
 	}
 	
 	public void onQuestGet(QuestGetEvent event){
@@ -20,9 +21,8 @@ public class QuestListener extends CustomEventListener
 	public void onQuestFinish(QuestFinishEvent event){	
 	}
 	
-/*	public void onQuestDrop(QuestDropEvent event){
-		
-	}*/
+	public void onQuestDrop(QuestDropEvent event){	
+	}
 	
 	//Get the correct methods to run
 	public void onCustomEvent(Event event){
@@ -32,5 +32,7 @@ public class QuestListener extends CustomEventListener
 			onQuestGet((QuestGetEvent)event);
 		else if(event instanceof QuestFinishEvent)
 			onQuestFinish((QuestFinishEvent)event);
+		else if(event instanceof QuestDropEvent)
+			onQuestDrop((QuestDropEvent)event);
 	}
 }

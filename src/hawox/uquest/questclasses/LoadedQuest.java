@@ -125,29 +125,6 @@ public class LoadedQuest {
 		return null;
 	}
 	
-	/*public boolean checkType(String type){
-		System.out.println(type);
-		System.out.println((this.types.contains(type)));
-		return(this.types.contains(type));
-		
-		/*
-		for(Objective objective : this.objectives){
-			if(objective.getType().equalsIgnoreCase(type))
-				return true;
-		}
-		return false;*/
-	//}
-	
-	/*public boolean checkObjectiveName(String name){
-		for(Objective objective : this.objectives){
-			System.out.println(name);
-			if(objective.getObjectiveName().equalsIgnoreCase("name"))
-				System.out.println("Name is true");
-				return true;
-		}
-		return false;
-	}*/
-	
 	public void finish(UQuest plugin, Player player, boolean showText){
 		Quester quester = plugin.getQuestInteraction().getQuester(player);
 		int id = quester.getQuestID(); //For the event to know which quest id the player had

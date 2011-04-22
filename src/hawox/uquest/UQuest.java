@@ -211,6 +211,9 @@ public class UQuest extends JavaPlugin {
 		// Entity Stuff
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
+		
+		//custom!
+		pm.registerEvent(Event.Type.CUSTOM_EVENT, this.uQuestListener, Event.Priority.Normal, this);
 	}
 	
 	public void readConfig() {

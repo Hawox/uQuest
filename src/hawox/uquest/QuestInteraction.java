@@ -1,5 +1,6 @@
 package hawox.uquest;
 
+import hawox.uquest.interfaceevents.QuestDropEvent;
 import hawox.uquest.questclasses.CurrentQuest;
 
 import java.util.Collections;
@@ -150,6 +151,7 @@ final public class QuestInteraction {
 	 */
 	public void questDrop(Player player){
 		Quester quester = getQuester(player);
+		int id = quester.getQuestID();
 		//set them to having no active quest
 		quester.setQuestID(-1);
 		quester.clearTracker();
@@ -159,7 +161,9 @@ final public class QuestInteraction {
 		if(plugin.isUseSQLite() == true){
 			plugin.getDB().put(player.getName(), quester);
 		}
-		
+		//call event
+		plugin.getServer().getPluginManager().callEvent(new QuestDropEvent(plugin.getServer().getPlayer(quester.getTheQuestersName()), quester, id));
+
 	}
 	
 	/*
