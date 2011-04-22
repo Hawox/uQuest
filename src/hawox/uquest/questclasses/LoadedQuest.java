@@ -2,6 +2,7 @@ package hawox.uquest.questclasses;
 
 import hawox.uquest.Quester;
 import hawox.uquest.UQuest;
+import hawox.uquest.interfaceevents.QuestFinishEvent;
 import hawox.uquest.questclasses.QuestLoader.YamlQuest;
 import hawox.uquest.questclasses.QuestLoader.ymlReward;
 
@@ -149,6 +150,7 @@ public class LoadedQuest {
 	
 	public void finish(UQuest plugin, Player player, boolean showText){
 		Quester quester = plugin.getQuestInteraction().getQuester(player);
+		int id = quester.getQuestID(); //For the event to know which quest id the player had
 
 		//finish info
 		if(showText == true){
@@ -170,7 +172,7 @@ public class LoadedQuest {
 		//Reward Stuff
 		for(Reward reward : this.rewards)
 			reward.giveReward(plugin, player);
-		
+				
 		//set them to having no active quest
 		quester.setQuestID(-1);
 		//set them to having no quest progress thingy stored
@@ -182,7 +184,8 @@ public class LoadedQuest {
 		if(plugin.isUseSQLite())
 			plugin.getDB().put(player.getName(), quester);
 
-		
+		//call event
+		plugin.getServer().getPluginManager().callEvent(new QuestFinishEvent(plugin.getServer().getPlayer(quester.getTheQuestersName()), quester, id));
 	}
 
 	

@@ -42,7 +42,7 @@ final public class QuestInteraction {
 		//check if the player already has an active quest or not (-1 is no active quest)
 		if( this.getCurrentQuest(player,false) == null ){
 			try{
-				quester.giveQuest(questNumber, plugin.getTheQuests().get(questNumber));
+				quester.giveQuest(plugin, questNumber, plugin.getTheQuests().get(questNumber));
 			}catch(IndexOutOfBoundsException iobe){ 
 				System.err.println("\n\n\n" + plugin.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
 				plugin.getServer().getPluginManager().disablePlugin(plugin);
@@ -142,7 +142,6 @@ final public class QuestInteraction {
 			//plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " has completed " + ChatColor.DARK_PURPLE + quester.getQuestsCompleted() + ChatColor.YELLOW + " quests!");
 			plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.RED + " is now on quest level " + ChatColor.DARK_RED + getQuestLevel(player));
 		}
-		
 		
 	}
 	

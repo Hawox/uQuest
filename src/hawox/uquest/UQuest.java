@@ -50,6 +50,7 @@ public class UQuest extends JavaPlugin {
 	private final UQuestBlockListener blockListener = new UQuestBlockListener(this);
 	private final UQuestEntityListener entityListener = new UQuestEntityListener(this);
     private static PluginListener PluginListener = new PluginListener();
+    private final QuestListener uQuestListener = new QuestListener();
     
     //Plugin support
     private String Money_Plugin = "none";
@@ -822,6 +823,10 @@ public class UQuest extends JavaPlugin {
 
 	public void setMobsTagged(HashMap<Integer, String> mobsTagged) {
 		this.mobsTagged = mobsTagged;
+	}
+
+	public QuestListener getuQuestListener() {
+		return uQuestListener;
 	}
     
 	

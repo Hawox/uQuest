@@ -1,5 +1,7 @@
 package hawox.uquest;
 
+import hawox.uquest.interfaceevents.QuestGetEvent;
+import hawox.uquest.interfaceevents.TrackerAddEvent;
 import hawox.uquest.questclasses.LoadedQuest;
 import hawox.uquest.questclasses.Objective;
 
@@ -64,7 +66,7 @@ public class Quester implements Serializable{
 		//defineQuestLevel();
 	}
 	
-	public boolean giveQuest(int questID, LoadedQuest quest){
+	public boolean giveQuest(UQuest plugin, int questID, LoadedQuest quest){
 		this.setQuestID(questID);
 		
 		HashMap<String,Integer> tracker = new HashMap<String,Integer>();
@@ -74,6 +76,8 @@ public class Quester implements Serializable{
 		
 		this.setQuestTracker(tracker);
 		
+		//call event
+		plugin.getServer().getPluginManager().callEvent(new QuestGetEvent(plugin.getServer().getPlayer(this.theQuestersName), this, questID));
 		return true;
 	}
 	
@@ -113,19 +117,6 @@ public class Quester implements Serializable{
 		this.questTracker.remove(which);
 		this.questTracker.put(which, toWhat);
 		
-		
-		/*
-		//Just incase someone making a stupid quest with two of the same objective.
-		boolean worked = false;
-		 for(int i=0; i<this.questTracker.length; i++){
-			String[] tracker = this.questTracker[i].split(":");
-			if(tracker[0].equalsIgnoreCase(which)){
-				tracker[1] = Integer.toString(toWhat);
-				this.questTracker[i] = this.arrayToString(tracker, ":");
-				worked = true;
-			}
-		}
-		return worked;*/
 		return true;
 	}
 	
@@ -136,23 +127,15 @@ public class Quester implements Serializable{
 			System.err.println(plugin.pluginNameBracket() + " Quester:getTracker: Players tracker does not match their quest!");
 			System.err.println(plugin.pluginNameBracket() + " This is most likely due to editing a quest a players has.");
 			System.err.println(plugin.pluginNameBracket() + " Dropping their quest and giving it back to them to fix it.");
-			this.giveQuest(this.questID, plugin.theQuests.get(this.questID));
+			this.giveQuest(plugin,this.questID, plugin.theQuests.get(this.questID));
 			return getTracker(plugin, which); //try again.
 		}
-		/*
-		for(int i=0; i<this.questTracker.length; i++){
-			String[] tracker = this.questTracker[i].split(":");
-			if(tracker[0].equalsIgnoreCase(which)){
-				return Integer.parseInt(tracker[1]);
-			}
-		}
-		return -1337;*/
 	}
 	
 	public boolean addToTracker(UQuest plugin, String which, int addWhat){
-		//system.err.println("infogiven: " + which + " " + addWhat);
 		this.setTracker(which, addWhat + this.getTracker(plugin, which));
-		//system.err.println("infonew: " + which + " " + getTracker(which));
+		//call event
+		plugin.getServer().getPluginManager().callEvent(new TrackerAddEvent(plugin.getServer().getPlayer(this.theQuestersName), which, addWhat));
 		return true;
 	}
 	
@@ -172,16 +155,6 @@ public class Quester implements Serializable{
 		}
 	}
 	
-	/*public int defineQuestLevel(){
-		this.questLevel = this.questsCompleted/plugin.questLevelInterval;
-		return this.questLevel;
-	}*/
-	
-	/*public int getQuestLevel() {
-		defineQuestLevel();
-		return questLevel;
-	}*/
-
 	public void setQuestLevel(int questLevel) {
 		this.questLevel = questLevel;
 	}
