@@ -109,6 +109,9 @@ public class UQuestEntityListener extends EntityListener {
     			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
 //    			if(loadedQuest.checkType("kill")){
     				//check if the monster they killed in the one they needed
+    			if( loadedQuest.checkObjective(plugin, player.getLocation(), "kill", "any")){
+    				quester.addToTracker(plugin, "any", 1);
+    			}
     				if( (creature instanceof Skeleton) && (loadedQuest.checkObjective(plugin, player.getLocation(),"kill","skeleton"))){
     					quester.addToTracker(plugin, "skeleton", 1);
     				}
