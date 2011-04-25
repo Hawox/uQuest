@@ -71,7 +71,7 @@ public class Cmd_uquest implements CommandExecutor{
 							plugin.getQuestInteraction().giveQuestRandom(player);
 						}
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						player.sendMessage(ChatColor.RED + "You don't have permission to give quests!");
 						return true;					}
 				}
 							
@@ -86,7 +86,7 @@ public class Cmd_uquest implements CommandExecutor{
 							plugin.getQuestInteraction().getCurrentQuest(player,plugin.getQuestInteraction().isScaleQuestLevels()).printInfo(this.plugin, player);
 						}
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						player.sendMessage(ChatColor.RED + "You don't have permission to get quest info!");
 						return true;					}
 				}
 							
@@ -94,7 +94,7 @@ public class Cmd_uquest implements CommandExecutor{
 					if( (plugin.isUsePermissions() == false) || ( (plugin.isUsePermissions()) && (UQuest.getPermissions().has(player, "uQuest.CanQuest.stats")) ) ){
 						plugin.getQuestInteraction().showQuestersInfo(player);
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						player.sendMessage(ChatColor.RED + "You don't have permission to get your stats!");
 						return true;					}
 				}
 				
@@ -103,7 +103,7 @@ public class Cmd_uquest implements CommandExecutor{
 						//Tell the player the # of quests in the system
 						player.sendMessage("There are currently " + ChatColor.GOLD + Integer.toString(plugin.getQuestInteraction().getQuestTotal()) + ChatColor.WHITE + " quests loaded!");
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						player.sendMessage(ChatColor.RED + "You don't have permission to check the number of loaded quests!");
 						return true;					}
 				}
 				
@@ -121,7 +121,7 @@ public class Cmd_uquest implements CommandExecutor{
 							}
 						}
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission to drop quests!");
+						player.sendMessage(ChatColor.RED + "You don't have permission to complete quests this way!");
 						return true;					}
 				}
 				
