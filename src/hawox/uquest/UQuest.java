@@ -202,6 +202,8 @@ public class UQuest extends JavaPlugin {
 		
 		// Player Stuff
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,Priority.Normal, this);
+
 
 		// Block Stuff
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener,Priority.Normal, this);

@@ -1,8 +1,11 @@
 package hawox.uquest;
 
+import hawox.uquest.questclasses.LoadedQuest;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 
 /**
@@ -38,6 +41,24 @@ public class UQuestPlayerListener extends PlayerListener {
     		plugin.placePlayerIntoList(player);
     	}
     }
+    
+/*    @Override
+    public void onPlayerMove(PlayerMoveEvent event){
+    	Player player = event.getPlayer();
+       	if(plugin.isEnabled() == true){
+        	//get our quester
+        	Quester quester = plugin.getQuestInteraction().getQuester(player);
+    		//get the players current quest as well if they have one
+    		if(quester.getQuestID() != -1){
+    			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
+//    			if(loadedQuest.checkType("kill")){
+    				//check if the monster they killed in the one they needed
+    			if( loadedQuest.checkObjective(plugin, player.getLocation(), "move", "any")){
+    				quester.addToTracker(plugin, "any", 1);
+    			}
+    		}
+       	}
+    }*/
 }
     
     
