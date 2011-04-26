@@ -83,19 +83,16 @@ public class UQuestEntityListener extends EntityListener {
     	
     	if( (player != null) && ( (creature != null) || (damagedPlayer != null) )     ){
     		//We have a player and a creature/damaged-player
+    		int id = -1594; //random number
     		try{
-    			int id = creature.getEntityId();
+    			id = creature.getEntityId();
+    		}catch(NullPointerException npe){
+    			//it's a player they hit
+    			id = damagedPlayer.getEntityId();
+    		}
+    		if(id != -1594){//Have a valid id
     			String pName = player.getName();
     			plugin.getMobsTagged().put(id,pName);
-    		}catch(NullPointerException npe){
-    			/* This error only appears when players don't have quests so this should work with the try and catch.
-    			 * Quester q = plugin.getQuestInteraction().getQuester(player);
-    			System.err.println(plugin.pluginNameBracket() + " You got the error that I can't duplicate!!! Post this info on the forums for me!\n\n\n\n---------------------\nStart");
-    			System.err.println("Quester Name: " + player.getName());
-    			System.err.println("Quester Info: " + q.toString());
-    			System.err.println("Copy the quest with this number from your Quests.yml: " + q.getQuestID());
-    			System.err.println("Thank you for helping with this! If you don't send this is creepers will eat your server files!\nWe don't want that!!! >:C");
-    			System.err.println("End\n---------------------\n\n\n\n");*/
     		}
     	}
     }
