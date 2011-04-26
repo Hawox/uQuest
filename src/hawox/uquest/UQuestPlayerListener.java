@@ -42,7 +42,7 @@ public class UQuestPlayerListener extends PlayerListener {
     	}
     }
     
-/*    @Override
+    @Override
     public void onPlayerMove(PlayerMoveEvent event){
     	Player player = event.getPlayer();
        	if(plugin.isEnabled() == true){
@@ -51,14 +51,12 @@ public class UQuestPlayerListener extends PlayerListener {
     		//get the players current quest as well if they have one
     		if(quester.getQuestID() != -1){
     			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
-//    			if(loadedQuest.checkType("kill")){
-    				//check if the monster they killed in the one they needed
-    			if( loadedQuest.checkObjective(plugin, player.getLocation(), "move", "any")){
-    				quester.addToTracker(plugin, "any", 1);
+    			if( loadedQuest.checkObjective(plugin, player.getLocation(), "move", "move_any")){
+    				quester.addToTracker(plugin, "move_any", 1);
     			}
     		}
        	}
-    }*/
+    }
 }
     
     

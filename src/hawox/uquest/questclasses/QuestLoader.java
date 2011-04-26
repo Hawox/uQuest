@@ -404,6 +404,20 @@ public class QuestLoader {
 			    			}
 			  		}
 
+				}else
+					
+					if(type.equalsIgnoreCase("Move")){
+				  		try{
+				  			returnMe.add(new Objective("move", (String)moreInfo.get("Display_Name"), (String)moreInfo.get("Objective_ID"), (Integer)moreInfo.get("Amount"), theLocation.toStringFromPoint(), theLocation.toStringFromGive()));
+				  		}catch(NullPointerException npe){
+				  			try{
+				  				returnMe.add(new Objective("move", (String)moreInfo.get("Display_Name"), (String)moreInfo.get("Objective_ID"), (Integer)moreInfo.get("Amount"), null, null));
+				  			}catch(NullPointerException npe2){
+			    				//player did not format their quest correctly at this point.
+			    				questLoadError(questNumber, "Objective format error:\n Key:" + key + "\nType:" + type + " \n Value:" + value);
+			    			}
+				  		}
+				  		
 				}else{
 					questLoadError(questNumber, "Unknown Objective:\n Type:" + type + " \n Value:" + value);
 		    	}
