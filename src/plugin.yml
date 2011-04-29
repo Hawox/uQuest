@@ -1,6 +1,6 @@
 name: uQuest
 main: hawox.uquest.UQuest
-version: 1.15
+version: 1.20
 author: Hawox
 description: >
              Heavily customizable quest plugin. Gets quests anywhere with a simple /uquest
