@@ -632,6 +632,15 @@ final public class QuestInteraction {
 	public void addMoney(Player player, int addWhat) {
 		addMoney(player, addWhat, true);
 	}
+	public Random getNumberGen() {
+		return numberGen;
+	}
+	public void setNumberGen(Random numberGen) {
+		this.numberGen = numberGen;
+	}
+	public UQuest getPlugin() {
+		return plugin;
+	}
 	
 	
 	
