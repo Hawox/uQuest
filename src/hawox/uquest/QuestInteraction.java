@@ -38,6 +38,27 @@ final public class QuestInteraction {
 	 * 
 	 * returns true if player got a new quest
 	 */
+	public boolean giveQuest(int questNumber, Quester quester, boolean showText){
+		Player player = plugin.getServer().getPlayer(quester.getTheQuestersName());
+		//check if the player already has an active quest or not (-1 is no active quest)
+		if( this.getCurrentQuest(quester,false) == null ){
+			try{
+				quester.giveQuest(plugin, questNumber, plugin.getTheQuests().get(questNumber));
+			}catch(IndexOutOfBoundsException iobe){ 
+				System.err.println("\n\n\n" + plugin.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
+				plugin.getServer().getPluginManager().disablePlugin(plugin);
+			}
+			//get their quest info again to output stuffs
+			this.getCurrentQuest(quester,this.isScaleQuestLevels()).printInfo(this.plugin, player);
+			return true;
+		} else {
+			//player dosn't have a quest
+			if(showText == true){
+				player.sendMessage(ChatColor.RED + "You already have an active quest!");
+			}
+			return false;
+		}
+	}
 	public boolean giveQuest(int questNumber, Player player, boolean showText){
 		Quester quester = getQuester(player);
 		//check if the player already has an active quest or not (-1 is no active quest)
@@ -67,23 +88,9 @@ final public class QuestInteraction {
 	 */
 	public boolean giveQuestRandom(Player player, boolean showText){
 		return giveQuest(numberGen.nextInt(getQuestTotal()),player,showText);
-		/*
-		Quester quester = getQuester(player);
-		//check if the player already has an active quest or not (-1 is no active quest)
-		if( this.getCurrentQuest(player,this.isScaleQuestLevels()) == null ){
-			//player can get a quest! Assign them a quest ID
-			quester.setQuestID(numberGen.nextInt(getQuestTotal()));
-			//get their quest info again to output stuffs
-			this.getCurrentQuest(player,this.isScaleQuestLevels()).printInfo(this.plugin, player);
-			return true;
-		} else {
-			//player dosn't have a quest
-			if(showText == true){
-				player.sendMessage(ChatColor.RED + "You already have an active quest!");
-			}
-			return false;
-		}
-		*/
+	}
+	public boolean giveQuestRandom(Quester quester, boolean showText){
+		return giveQuest(numberGen.nextInt(getQuestTotal()),quester,showText);
 	}
 	
 	/*
@@ -149,8 +156,8 @@ final public class QuestInteraction {
 	/*
 	 * Drops a players current quest
 	 */
-	public void questDrop(Player player){
-		Quester quester = getQuester(player);
+	public void questDrop(Quester quester){
+
 		int id = quester.getQuestID();
 		//set them to having no active quest
 		quester.setQuestID(-1);
@@ -159,29 +166,37 @@ final public class QuestInteraction {
 		plugin.saveQuesterToFile(quester);
 		
 		if(plugin.isUseSQLite() == true){
-			plugin.getDB().put(player.getName(), quester);
+			plugin.getDB().put(quester.getTheQuestersName(), quester);
 		}
 		//call event
 		plugin.getServer().getPluginManager().callEvent(new QuestDropEvent(plugin.getServer().getPlayer(quester.getTheQuestersName()), quester, id));
 
+	}
+	//overloaded so you can send it a player object
+	public void questDrop(Player player){
+		Quester quester = getQuester(player);
+		questDrop(quester);
 	}
 	
 	/*
 	 * Returns the players current quest with no level scaling
 	 * -Returns void if they have no quest
 	 */
-	public CurrentQuest getCurrentQuest(Player player, boolean scaleToQuesterLevel){
-		Quester quester = getQuester(player);
+	public CurrentQuest getCurrentQuest(Quester quester, boolean scaleToQuesterLevel){
 		//get the players current quest as well if they have one
 		CurrentQuest currentQuest = null;
 		if(quester.getQuestID() != -1){
 			if(scaleToQuesterLevel == false){ //whoops... I had this true. That's why it didn't work before v1.0 x.x;;
 				currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), 0);
 			}else{
-				currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), this.getQuestLevel(player));
+				currentQuest = new CurrentQuest(plugin, plugin.getTheQuests().get(quester.getQuestID()), this.getQuestLevel(quester));
 			}
 		}
 		return currentQuest;
+	}
+	public CurrentQuest getCurrentQuest(Player player, boolean scaleToQuesterLevel){
+		Quester quester = getQuester(player);
+		return getCurrentQuest(quester, scaleToQuesterLevel);
 	}
 	
 	/*
@@ -214,7 +229,7 @@ final public class QuestInteraction {
 	 * Gets the current amount of loaded quests
 	 */
 	public int getQuestTotal(){
-		return plugin.theQuests.size();
+		return plugin.getTheQuests().size();
 	}
 	
 	/*
@@ -243,15 +258,19 @@ final public class QuestInteraction {
 	/*
 	 * Gets the level of the quester
 	 */
-	public int getQuestLevel(Player player) {
+	public int getQuestLevel(Quester quester) {
 		//update the questerlevel first
-		Quester quester = getQuester(player);
 		quester.setQuestLevel(quester.getQuestsCompleted()/plugin.getQuestLevelInterval());
 		
 		if(plugin.isUseSQLite() == true){
-			plugin.getDB().put(player.getName(), quester);
+			plugin.getDB().put(quester.getTheQuestersName(), quester);
 		}
 		return quester.getQuestLevel();
+	}
+	public int getQuestLevel(Player player) {
+		//update the questerlevel first
+		Quester quester = getQuester(player);
+		return getQuestLevel(quester);
 	}
 	
 	//save them to file

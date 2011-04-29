@@ -62,7 +62,7 @@ public class UQuest extends JavaPlugin {
     //Lists
 	protected HashSet<Quester> theQuesterList = new HashSet<Quester>();						//Loaded players
 	protected ArrayList<Quester>  theQuestersRanked = new ArrayList<Quester>();				//Loaded players sorted by rank
-	protected ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();				//Loaded Quests
+	private ArrayList<LoadedQuest> theQuests = new ArrayList<LoadedQuest>();				//Loaded Quests
 	protected HashSet<String> canNotDrop = new HashSet<String>();							//Players on quest drop cool down
 	protected ArrayList<String> canNotDropRemoveTimer = new ArrayList<String>();			//Players on quest drop cool down
 //	protected ArrayList<String> mobsKilled = new ArrayList<String>();						//Mob ID's counted as dead
@@ -474,6 +474,20 @@ public class UQuest extends JavaPlugin {
 
 	public String pluginNameBracket(){
 		return ("[" + this.getPdfFile().getName() + "]");
+	}
+	
+	//Also given the quester object so we can dump their quest if it's too high
+	public LoadedQuest getQuestersQuest(Quester q){
+		try{
+			return this.getTheQuests().get(q.getQuestID());
+		}catch(ArrayIndexOutOfBoundsException aiobe){
+			System.err.println(this.pluginNameBracket() + " " + q.getTheQuestersName() + " has an invalid quest number!");
+			System.err.println(this.pluginNameBracket() + " Quest id of: " + q.getQuestID() + " | Number of loaded quests:" + this.getQuestInteraction().getQuestTotal());
+			this.getQuestInteraction().questDrop(q);
+			this.getQuestInteraction().giveQuestRandom(q, false);
+			System.err.println(this.pluginNameBracket() + " " + q.getTheQuestersName() + " has had their quest replaced with a random one!");
+		}
+		return this.getTheQuests().get(q.getQuestID());
 	}
 	
 

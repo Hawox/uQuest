@@ -104,7 +104,7 @@ public class UQuestEntityListener extends EntityListener {
         	Quester quester = plugin.getQuestInteraction().getQuester(player);
     		//get the players current quest as well if they have one
     		if(quester.getQuestID() != -1){  
-    			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
+    			LoadedQuest loadedQuest = plugin.getQuestersQuest(quester);
 //    			if(loadedQuest.checkType("kill")){
     				//check if the monster they killed in the one they needed
     			if( loadedQuest.checkObjective(plugin, player.getLocation(), "kill", "kill_any")){
@@ -167,7 +167,7 @@ public class UQuestEntityListener extends EntityListener {
         	Quester quester = plugin.getQuestInteraction().getQuester(player);
     		//get the players current quest as well if they have one
     		if(quester.getQuestID() != -1){  
-    			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
+    			LoadedQuest loadedQuest = plugin.getQuestersQuest(quester);
 //    			if(loadedQuest.checkType("kill")){
     				//check if the monster they killed in the one they needed
     				if(loadedQuest.checkObjective(plugin, player.getLocation(),"kill","player")){

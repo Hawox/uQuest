@@ -50,7 +50,7 @@ public class UQuestPlayerListener extends PlayerListener {
         	Quester quester = plugin.getQuestInteraction().getQuester(player);
     		//get the players current quest as well if they have one
     		if(quester.getQuestID() != -1){
-    			LoadedQuest loadedQuest = plugin.theQuests.get(quester.getQuestID());
+    			LoadedQuest loadedQuest = plugin.getQuestersQuest(quester);
     			if( loadedQuest.checkObjective(plugin, player.getLocation(), "move", "move_any")){
     				quester.addToTracker(plugin, "move_any", 1);
     			}
