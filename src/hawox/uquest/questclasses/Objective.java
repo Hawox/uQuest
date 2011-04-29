@@ -135,7 +135,7 @@ public class Objective{
 		if(this.type.equalsIgnoreCase("gather")){
 			howMuch = countItems(player,this.itemNeeded.getTypeId());
 		}
-		if( (this.type.equalsIgnoreCase("blockdestroy")) || this.type.equalsIgnoreCase("blockdamage") || this.type.equalsIgnoreCase("blockplace") || this.type.equalsIgnoreCase("kill")){
+		if( (this.type.equalsIgnoreCase("blockdestroy")) || this.type.equalsIgnoreCase("blockdamage") || this.type.equalsIgnoreCase("blockplace") || this.type.equalsIgnoreCase("kill") || this.type.equalsIgnoreCase("move")){
 			howMuch = questTracker;
 		}
 		//Objectives that are complete will look different than non completed objectives
@@ -194,6 +194,14 @@ public class Objective{
 		}
 		//check if it's a kill quest
 		if(this.type.equalsIgnoreCase("kill")){
+			//it's a blockplace mission, check the amount of the item they have and compare it to the mission reqs
+			if(questTracker >= this.amountNeeded){
+				//player should have placed enough blocks for the quest
+				return true;
+			}
+		} 
+		//check if it's a move quest
+		if(this.type.equalsIgnoreCase("move")){
 			//it's a blockplace mission, check the amount of the item they have and compare it to the mission reqs
 			if(questTracker >= this.amountNeeded){
 				//player should have placed enough blocks for the quest
