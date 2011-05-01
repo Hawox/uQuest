@@ -125,30 +125,36 @@ final public class QuestInteraction {
 		currentQuest.finish(plugin, player, showText);
 		
 		//Tell the server for every x quests someone completes
-		if( (quester.getQuestsCompleted() % plugin.getQuestAnnounceInterval() ) == 0){
-			plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " has completed " + ChatColor.DARK_PURPLE + quester.getQuestsCompleted() + ChatColor.YELLOW + " quests! [Quest Level " + ChatColor.AQUA + getQuestLevel(player) + ChatColor.YELLOW + "]");
+		if(plugin.getQuestAnnounceInterval() != 0){
+			if( (quester.getQuestsCompleted() % plugin.getQuestAnnounceInterval() ) == 0){
+				plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " has completed " + ChatColor.DARK_PURPLE + quester.getQuestsCompleted() + ChatColor.YELLOW + " quests! [Quest Level " + ChatColor.AQUA + getQuestLevel(player) + ChatColor.YELLOW + "]");
+			}
 		}
 		
 		//for every 10 quests give them a random 10 blocks!
-		if( ( quester.getQuestsCompleted() % plugin.getQuestRewardInterval() ) == 0){
-			Random numberGen = new Random();
-			int itemNumberatInterValReward = numberGen.nextInt( plugin.getQuestRewards().length );
-			try{
-				String rewards[] = plugin.getQuestRewards()[itemNumberatInterValReward].split(",");
-				player.getInventory().addItem(new ItemStack(Integer.parseInt(rewards[0]), Integer.parseInt(rewards[2])));
-				plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + rewards[2] + " " + rewards[1] + ChatColor.YELLOW + "!");
-			}catch(NumberFormatException nfe){
+		if( plugin.getQuestRewardInterval() != 0 ){
+			if( ( quester.getQuestsCompleted() % plugin.getQuestRewardInterval() ) == 0){
+				Random numberGen = new Random();
+				int itemNumberatInterValReward = numberGen.nextInt( plugin.getQuestRewards().length );
+				try{
+					String rewards[] = plugin.getQuestRewards()[itemNumberatInterValReward].split(",");
+					player.getInventory().addItem(new ItemStack(Integer.parseInt(rewards[0]), Integer.parseInt(rewards[2])));
+					plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + rewards[2] + " " + rewards[1] + ChatColor.YELLOW + "!");
+				}catch(NumberFormatException nfe){
 					plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Invalid quest reward item ID! Giving them dirt by default!");
 					plugin.getServer().broadcastMessage(ChatColor.RED + "There was an invalid item ID in the quest rewards config! so you get 10 dirt!");
 					player.getInventory().addItem(new ItemStack(Material.DIRT, 10));
 					plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + "10 Dirt" + ChatColor.YELLOW + "!");
 				}
+			}
 		}
 		
 		//Tell the server for every x quests that the difficulty increased!
-		if( (quester.getQuestsCompleted() % plugin.getQuestLevelInterval() ) == 0){
-			//plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " has completed " + ChatColor.DARK_PURPLE + quester.getQuestsCompleted() + ChatColor.YELLOW + " quests!");
-			plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.RED + " is now on quest level " + ChatColor.DARK_RED + getQuestLevel(player));
+		if( plugin.getQuestLevelInterval() != 0){
+			if( (quester.getQuestsCompleted() % plugin.getQuestLevelInterval() ) == 0){
+				//plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " has completed " + ChatColor.DARK_PURPLE + quester.getQuestsCompleted() + ChatColor.YELLOW + " quests!");
+				plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.RED + " is now on quest level " + ChatColor.DARK_RED + getQuestLevel(player));
+			}
 		}
 		
 	}
