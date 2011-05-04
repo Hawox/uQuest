@@ -1,23 +1,25 @@
 package hawox.uquest;
 
-import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.event.server.ServerListener;
+import java.util.logging.Level;
+
 import org.bukkit.plugin.Plugin;
 
 import com.earth2me.essentials.Essentials;
-import com.nijiko.coelho.iConomy.iConomy;
+import com.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 import cosine.boseconomy.BOSEconomy;
 
 /**
- * Checks for plugins whenever one is enabled
+ * Setup plugin support
  */
-public class PluginListener extends ServerListener {
-    public PluginListener() { }
+public class PluginSupport{
 
-    @Override
-    public void onPluginEnable(PluginEnableEvent event) {
+    private final UQuest plugin;
+	
+	public PluginSupport(UQuest plugin) {
+		this.plugin = plugin;
+		
         if(UQuest.getiConomy() == null) {
             Plugin iConomy = UQuest.getBukkitServer().getPluginManager().getPlugin("iConomy");
 
@@ -63,4 +65,48 @@ public class PluginListener extends ServerListener {
         }
         
     }
+	
+	//Makes sure all of our supported plugins are loaded and accounted for
+	public void checkPluginSupport(){
+		if(plugin.isUseiConomy())
+			checkiCon();
+		if(plugin.isUsePermissions())
+			checkPerm();
+		if(plugin.isUseBOSEconomy())
+			checkBOSE();
+		if(plugin.isUseEssentials())
+			checkEssentials();
+	}
+
+	public void checkiCon(){	
+		boolean test = (UQuest.getiConomy() != null);
+		if (test == false) {
+			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
+			plugin.setUseiConomy(false);
+		}
+	}
+	
+	public void checkPerm(){	
+		boolean test = (UQuest.getPermissions() != null);
+		if (test == false) {
+			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Permissions is not loaded. Turning Permissions support off.");
+			plugin.setUsePermissions(false);
+		}
+	}
+	
+	public void checkBOSE(){	
+		boolean test = (UQuest.getBOSEconomy() != null);
+		if (test == false) {
+			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
+			plugin.setUseBOSEconomy(false);
+		}
+	}
+	
+	public void checkEssentials(){	
+		boolean test = (UQuest.getEssentials() != null);
+		if (test == false) {
+			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Essentials is not loaded. Turning Essentials support off.");
+			plugin.setUseEssentials(false);
+		}
+	}
 }

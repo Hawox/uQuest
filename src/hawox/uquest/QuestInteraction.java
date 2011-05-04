@@ -18,7 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.User;
-import com.nijiko.coelho.iConomy.system.Account;
+import com.iConomy.iConomy;
+import com.iConomy.system.Holdings;
 
 final public class QuestInteraction {
 	private final UQuest plugin;
@@ -208,7 +209,6 @@ final public class QuestInteraction {
 	/*
 	 * Shows the questers info
 	 */
-	@SuppressWarnings("static-access")
 	public void showQuestersInfo(Player player){
 		Quester quester = getQuester(player);
 		//Tell the player their active quest name
@@ -225,7 +225,7 @@ final public class QuestInteraction {
 		player.sendMessage("Quests completed: " + quester.getQuestsCompleted());
 		//tell the player the amount of money they have earned from quests
 		if(plugin.isUseiConomy() == true){
-			player.sendMessage("Total " + plugin.getiConomy().getBank().getCurrency() + " received: " + quester.getMoneyEarnedFromQuests());
+			player.sendMessage("Total " + plugin.getMoneyName() + " received: " + quester.getMoneyEarnedFromQuests());
 		}
 		//get their rank!
 		player.sendMessage("Rank: " + findPlayerRanking(player.getName()));
@@ -392,12 +392,12 @@ final public class QuestInteraction {
 	
 	
 	/**
-	 * Support for different money stuff it's best to juse use these!
+	 * Support for different money stuff it's best to just use these!
 	 **/
 	@SuppressWarnings("static-access")
 	public double getMoney(Player player) {
 		if(plugin.isUseiConomy()){
-			return (plugin.getiConomy().getBank().getAccount(player.getName()).getBalance());
+			return (plugin.getiConomy().getAccount(player.getName()).getHoldings().balance());
 		}else if(plugin.isUseBOSEconomy()){
 			return plugin.getBOSEconomy().getPlayerMoney(player.getName());
 		}else if(plugin.isUseEssentials()){
@@ -410,9 +410,8 @@ final public class QuestInteraction {
 	@SuppressWarnings("static-access")
 	public void setMoney(Player player, double toWhat) {
 		if(plugin.isUseiConomy()){
-			Account account = plugin.getiConomy().getBank().getAccount(player.getName());
-			account.setBalance(toWhat);
-			account.save();
+			Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
+			balance.set(toWhat);
 		}
 		if(plugin.isUseBOSEconomy()){
 			plugin.getBOSEconomy().setPlayerMoney(player.getName(), (int) toWhat, false);
