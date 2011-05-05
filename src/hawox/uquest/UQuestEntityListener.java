@@ -101,7 +101,12 @@ public class UQuestEntityListener extends EntityListener {
     public void playerKilledCreature(Player player, Creature creature){
     	if(plugin.isEnabled() == true){
         	//get our quester
-        	Quester quester = plugin.getQuestInteraction().getQuester(player);
+    		Quester quester;
+    		try{
+    			quester = plugin.getQuestInteraction().getQuester(player);
+    		}catch(NullPointerException npe){
+    			return;//player logged out since they hurt a monster so exit out
+    		}
     		//get the players current quest as well if they have one
     		if(quester.getQuestID() != -1){  
     			LoadedQuest loadedQuest = plugin.getQuestersQuest(quester);
