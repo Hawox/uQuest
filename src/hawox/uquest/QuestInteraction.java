@@ -174,6 +174,7 @@ final public class QuestInteraction extends ExtrasManager{
 		//set them to having no active quest
 		quester.setQuestID(-1);
 		quester.clearTracker();
+		quester.setQuestsDropped(quester.getQuestsDropped() + 1);
 		//save them to file
 		plugin.saveQuesterToFile(quester);
 		
@@ -228,6 +229,8 @@ final public class QuestInteraction extends ExtrasManager{
 		player.sendMessage("Active quest: " + tempQuestNameStorage);
 		//tell the player their # of completed quests
 		player.sendMessage("Quests completed: " + quester.getQuestsCompleted());
+		//droped quests
+		player.sendMessage("Quests dropped: " + quester.getQuestsDropped());
 		//tell the player the amount of money they have earned from quests
 		if(plugin.isUseiConomy() == true){
 			player.sendMessage("Total " + plugin.getMoneyName() + " received: " + quester.getMoneyEarnedFromQuests());

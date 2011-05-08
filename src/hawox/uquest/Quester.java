@@ -35,6 +35,7 @@ public class Quester implements Serializable{
 	//With more objectives this can't be a simple int. It will look like "wood.5~pig.2" ""
 	HashMap<String,Integer> questTracker = new HashMap<String,Integer>();
 	int questLevel;
+	int questsDropped;
 	
 	//int questsFailed; TODO for a later time.
 	
@@ -195,5 +196,17 @@ public class Quester implements Serializable{
 	
 	public void setQuestTracker(HashMap<String,Integer> questTracker){
 		this.questTracker = questTracker;
+	}
+
+	public int getQuestsDropped() {
+		return questsDropped;
+	}
+
+	public void setQuestsDropped(int questsDropped) {
+		this.questsDropped = questsDropped;
+	}
+
+	public HashMap<String, Integer> getQuestTracker() {
+		return questTracker;
 	}
 }
