@@ -30,7 +30,7 @@ public class UQuestPlayerListener extends PlayerListener {
     		if(plugin.getDB().get(player.getName()) == null){
     			//They are not in the DB so add them as a quester!
     			plugin.getDB().put(player.getName(), new Quester(plugin.getQuestDefaultPlayer().split(":"), player));
-    			System.out.println(plugin.pluginNameBracket() + " Player added to SQLite DB! : " + player.getName());
+    			System.out.println(UQuest.pluginNameBracket() + " Player added to SQLite DB! : " + player.getName());
     		}
     		//we still need to add them to the list for ranking means
     		Quester q = plugin.getDB().get(player.getName());

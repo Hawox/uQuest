@@ -118,9 +118,9 @@ public class Quester implements Serializable{
 		try{
 			return this.questTracker.get(which);
 		}catch(NullPointerException npe){
-			System.err.println(plugin.pluginNameBracket() + " Quester:getTracker: Players tracker does not match their quest!");
-			System.err.println(plugin.pluginNameBracket() + " This is most likely due to editing a quest a players has.");
-			System.err.println(plugin.pluginNameBracket() + " Dropping their quest and giving it back to them to fix it.");
+			System.err.println(UQuest.pluginNameBracket() + " Quester:getTracker: Players tracker does not match their quest!");
+			System.err.println(UQuest.pluginNameBracket() + " This is most likely due to editing a quest a players has.");
+			System.err.println(UQuest.pluginNameBracket() + " Dropping their quest and giving it back to them to fix it.");
 			this.giveQuest(plugin,this.questID, plugin.getQuestersQuest(this));
 			return getTracker(plugin, which); //try again.
 		}

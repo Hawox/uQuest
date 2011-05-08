@@ -41,7 +41,7 @@ import cosine.boseconomy.BOSEconomy;
 public class UQuest extends JavaPlugin {
 	
     //Plugin basics
-	private PluginDescriptionFile pdfFile;
+	private static PluginDescriptionFile pdfFile;
 	public Logger log;
     private static Server Server = null;
     
@@ -181,7 +181,7 @@ public class UQuest extends JavaPlugin {
 		// Register Bukkit Hooks
 		registerEvents();
 
-		System.out.println(pluginNameBracket() + " v" + this.getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
+		System.out.println(pluginNameBracket() + " v" + getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
 		
 		pluginSupport = new PluginSupport(this);
 		pluginSupport.checkPluginSupport();
@@ -423,8 +423,8 @@ public class UQuest extends JavaPlugin {
 		}
 	}
 
-	public String pluginNameBracket(){
-		return ("[" + this.getPdfFile().getName() + "]");
+	public static String pluginNameBracket(){
+		return ("[" + UQuest.getPdfFile().getName() + "]");
 	}
 	
 	//Also given the quester object so we can dump their quest if it's too high
@@ -432,11 +432,11 @@ public class UQuest extends JavaPlugin {
 		try{
 			return this.getTheQuests().get(q.getQuestID());
 		}catch(ArrayIndexOutOfBoundsException aiobe){
-			System.err.println(this.pluginNameBracket() + " " + q.getTheQuestersName() + " has an invalid quest number!");
-			System.err.println(this.pluginNameBracket() + " Quest id of: " + q.getQuestID() + " | Number of loaded quests:" + this.getQuestInteraction().getQuestTotal());
+			System.err.println(pluginNameBracket() + " " + q.getTheQuestersName() + " has an invalid quest number!");
+			System.err.println(pluginNameBracket() + " Quest id of: " + q.getQuestID() + " | Number of loaded quests:" + this.getQuestInteraction().getQuestTotal());
 			this.getQuestInteraction().questDrop(q);
 			this.getQuestInteraction().giveQuestRandom(q, false);
-			System.err.println(this.pluginNameBracket() + " " + q.getTheQuestersName() + " has had their quest replaced with a random one!");
+			System.err.println(pluginNameBracket() + " " + q.getTheQuestersName() + " has had their quest replaced with a random one!");
 		}
 		return this.getTheQuests().get(q.getQuestID());
 	}
@@ -680,10 +680,10 @@ public class UQuest extends JavaPlugin {
 	}*/
 
 	public void setPdfFile(PluginDescriptionFile pdfFile) {
-		this.pdfFile = pdfFile;
+		UQuest.pdfFile = pdfFile;
 	}
 
-	public PluginDescriptionFile getPdfFile() {
+	public static PluginDescriptionFile getPdfFile() {
 		return pdfFile;
 	}
 

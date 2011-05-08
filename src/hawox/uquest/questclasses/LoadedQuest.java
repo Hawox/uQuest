@@ -6,6 +6,7 @@ import hawox.uquest.interfaceevents.QuestFinishEvent;
 import hawox.uquest.questclasses.QuestLoader.YamlQuest;
 import hawox.uquest.questclasses.QuestLoader.ymlReward;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
@@ -23,6 +24,7 @@ public class LoadedQuest {
 	//Again... I forgot this would create multiple keys with different values. I'm changing it to a hashset of type:name
 	//HashMap<String,String> objectiveTypes = new HashMap<String,String>(); //We only care if there is one instance of the type(quests with 2 of the same type) so hashset is perfect
 	HashSet<String> objectiveTypes = new HashSet<String>();
+	HashMap<String,Object> extras = new HashMap<String,Object>();
 	
 	//Here to allow a custom creation process. Setup all members outside with setters
 	public LoadedQuest() {
@@ -51,6 +53,7 @@ public class LoadedQuest {
 			this.objectiveTypes.add(objective.getType() + ":" + objective.getObjectiveName());
 			//system.out.println(objective.getType());
 		}
+		this.extras = theQuest.getExtras();
 		
 		//System.out.println(this.name);
 		//System.out.println(this.startInfo);
@@ -205,6 +208,22 @@ public class LoadedQuest {
 
 	public void setObjectives(HashSet<Objective> objectives) {
 		this.objectives = objectives;
+	}
+
+	public HashSet<String> getObjectiveTypes() {
+		return objectiveTypes;
+	}
+
+	public void setObjectiveTypes(HashSet<String> objectiveTypes) {
+		this.objectiveTypes = objectiveTypes;
+	}
+
+	public HashMap<String, Object> getExtras() {
+		return extras;
+	}
+
+	public void setExtras(HashMap<String, Object> extras) {
+		this.extras = extras;
 	}
 	
 }

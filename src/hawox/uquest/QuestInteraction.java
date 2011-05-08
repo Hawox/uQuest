@@ -21,7 +21,12 @@ import com.earth2me.essentials.User;
 import com.iConomy.iConomy;
 import com.iConomy.system.Holdings;
 
-final public class QuestInteraction {
+/*
+ * Extends ExtrasManager so people can use the methods from it with the API.
+ * ExtrasManager still has it's own class incase I need to make adjustments later.
+ * For now, just pretend that the methods in ExtrasManager exist in this class only.
+ */
+final public class QuestInteraction extends ExtrasManager{
 	private final UQuest plugin;
 
 	
@@ -46,7 +51,7 @@ final public class QuestInteraction {
 			try{
 				quester.giveQuest(plugin, questNumber, plugin.getTheQuests().get(questNumber));
 			}catch(IndexOutOfBoundsException iobe){ 
-				System.err.println("\n\n\n" + plugin.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
+				System.err.println("\n\n\n" + UQuest.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
 				plugin.getServer().getPluginManager().disablePlugin(plugin);
 			}
 			//get their quest info again to output stuffs
@@ -67,7 +72,7 @@ final public class QuestInteraction {
 			try{
 				quester.giveQuest(plugin, questNumber, plugin.getTheQuests().get(questNumber));
 			}catch(IndexOutOfBoundsException iobe){ 
-				System.err.println("\n\n\n" + plugin.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
+				System.err.println("\n\n\n" + UQuest.pluginNameBracket() + " You have an empty quest list!\n How this got past the checks, I don't know but it did!\n Disabling plugin.\n\n\n");
 				plugin.getServer().getPluginManager().disablePlugin(plugin);
 			}
 			//get their quest info again to output stuffs
@@ -142,7 +147,7 @@ final public class QuestInteraction {
 					player.getInventory().addItem(new ItemStack(Integer.parseInt(rewards[0]), Integer.parseInt(rewards[2])));
 					plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + rewards[2] + " " + rewards[1] + ChatColor.YELLOW + "!");
 				}catch(NumberFormatException nfe){
-					plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Invalid quest reward item ID! Giving them dirt by default!");
+					plugin.log.log(Level.SEVERE, UQuest.pluginNameBracket() + " Invalid quest reward item ID! Giving them dirt by default!");
 					plugin.getServer().broadcastMessage(ChatColor.RED + "There was an invalid item ID in the quest rewards config! so you get 10 dirt!");
 					player.getInventory().addItem(new ItemStack(Material.DIRT, 10));
 					plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " got a reward of " + ChatColor.DARK_PURPLE + "10 Dirt" + ChatColor.YELLOW + "!");

@@ -23,7 +23,7 @@ public class Cmd_uquest implements CommandExecutor{
 		if(sender instanceof Player){
 			player = (Player)sender;
 			}else{
-				sender.sendMessage(plugin.pluginNameBracket() + " This is not ment for console use silly!");
+				sender.sendMessage(UQuest.pluginNameBracket() + " This is not ment for console use silly!");
 				return true;
 			}
 		
@@ -37,7 +37,7 @@ public class Cmd_uquest implements CommandExecutor{
 		}catch(NoClassDefFoundError ncdfe){
 				//they don't have permissions so disable it plugin wide
 				plugin.setUsePermissions(false);
-				System.err.println(plugin.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
+				System.err.println(UQuest.pluginNameBracket() + " Failed to access Permissions plugin. Disabling support for it.");
 		}
 		
 //		if(processQuest == true){

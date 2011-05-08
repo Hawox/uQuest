@@ -134,13 +134,15 @@ public class QuestLoader {
 		public String Finish_Info;
 		public HashSet<ymlReward> rewards;
 		public HashSet<Objective> objectives = new HashSet<Objective>();
+		public HashMap<String,Object> extras = new HashMap<String,Object>();
 		
-		YamlQuest(Object name, Object start, Object finish, HashSet<ymlReward> rewards, HashSet<Objective> objectives){
+		YamlQuest(Object name, Object start, Object finish, HashSet<ymlReward> rewards, HashSet<Objective> objectives, HashMap<String,Object> extras){
 			this.Name = (String) name;
 			this.Start_Info = (String) start;
 			this.Finish_Info = (String) finish;
 			this.rewards = rewards;
 			this.objectives = objectives;
+			this.extras = extras;
 		}
 		
 		//For testing
@@ -193,6 +195,14 @@ public class QuestLoader {
 
 		public void setObjectives(HashSet<Objective> objectives) {
 			this.objectives = objectives;
+		}
+
+		public HashMap<String, Object> getExtras() {
+			return extras;
+		}
+
+		public void setExtras(HashMap<String, Object> extras) {
+			this.extras = extras;
 		}
 		
 
@@ -283,8 +293,9 @@ public class QuestLoader {
 			HashMap<Object,Object> objectivesMap = (HashMap<Object,Object>)map.get("Objectives");
 			HashSet<Objective> objectives = getymlObjectivesFromHashMap(questNumber,objectivesMap);
 			
+			HashMap<String,Object> extrasMap = (HashMap<String,Object>)map.get("Extras");
 			
-		YamlQuest returnMe = new YamlQuest(map.get("Name"), map.get("Start_Info"), map.get("Finish_Info"), ymlRewards, objectives);
+		YamlQuest returnMe = new YamlQuest(map.get("Name"), map.get("Start_Info"), map.get("Finish_Info"), ymlRewards, objectives, extrasMap);
 		return returnMe;
 	}
 	

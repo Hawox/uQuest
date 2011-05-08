@@ -81,7 +81,7 @@ public class PluginSupport{
 	public void checkiCon(){	
 		boolean test = (UQuest.getiConomy() != null);
 		if (test == false) {
-			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
+			plugin.log.log(Level.SEVERE, UQuest.pluginNameBracket() + " iConomy is not loaded. Turning iConomy support off.");
 			plugin.setUseiConomy(false);
 		}
 	}
@@ -89,7 +89,7 @@ public class PluginSupport{
 	public void checkPerm(){	
 		boolean test = (UQuest.getPermissions() != null);
 		if (test == false) {
-			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Permissions is not loaded. Turning Permissions support off.");
+			plugin.log.log(Level.SEVERE, UQuest.pluginNameBracket() + " Permissions is not loaded. Turning Permissions support off.");
 			plugin.setUsePermissions(false);
 		}
 	}
@@ -97,7 +97,7 @@ public class PluginSupport{
 	public void checkBOSE(){	
 		boolean test = (UQuest.getBOSEconomy() != null);
 		if (test == false) {
-			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
+			plugin.log.log(Level.SEVERE, UQuest.pluginNameBracket() + " BOSEconomy is not loaded. Turning BOSEconomy support off.");
 			plugin.setUseBOSEconomy(false);
 		}
 	}
@@ -105,7 +105,7 @@ public class PluginSupport{
 	public void checkEssentials(){	
 		boolean test = (UQuest.getEssentials() != null);
 		if (test == false) {
-			plugin.log.log(Level.SEVERE, plugin.pluginNameBracket() + " Essentials is not loaded. Turning Essentials support off.");
+			plugin.log.log(Level.SEVERE, UQuest.pluginNameBracket() + " Essentials is not loaded. Turning Essentials support off.");
 			plugin.setUseEssentials(false);
 		}
 	}
