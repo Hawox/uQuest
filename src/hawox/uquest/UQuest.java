@@ -98,6 +98,7 @@ public class UQuest extends JavaPlugin {
 	private int dropQuestInterval = 60;
 	private int dropQuestCharge = 5000;
     private String moneyName = "Monies";
+    private int pluginTimerCheck = 5;
     private String questRewardsDefault = "87,Netherrack Blocks,10~88,Soul Sand Blocks,10~89,Glowstone Blocks,10~18,Leaf Blocks,10~344,Eggs,10~348,Glowstone Dust,10";
 	private String[] questRewards = { "87,Netherrack Blocks,10",
 			  "88,Soul Sand Blocks,10",
@@ -184,15 +185,14 @@ public class UQuest extends JavaPlugin {
 		System.out.println(pluginNameBracket() + " v" + getPdfFile().getVersion() + " enabled! With " + this.getQuestInteraction().getQuestTotal() + " quests loaded!");
 		
 		pluginSupport = new PluginSupport(this);
-		pluginSupport.checkPluginSupport();
-		
-		/*For iCon at least, it hooks in after the plugin enables. Solution: Timer!
+		//For iCon at least, it hooks in after the plugin enables. Solution: Timer!
 		ScheduledThreadPoolExecutor onEnable_Timer = new ScheduledThreadPoolExecutor(1);
 		onEnable_Timer.schedule(new Runnable() {
 			public void run() {
-				checkPluginSupport();
+				pluginSupport.link();
+				pluginSupport.checkPluginSupport();
 				}
-			}, pluginTimerCheck, TimeUnit.SECONDS);*/
+			}, pluginTimerCheck, TimeUnit.SECONDS);
 	}
 	
 	public void registerEvents() {
@@ -274,6 +274,7 @@ public class UQuest extends JavaPlugin {
 		moneyName = config.getString("PluginSupport.moneyName", moneyName);
 		
 		//*** money plugin stuff ***//
+		pluginTimerCheck = config.getInt("PluginSupport.pluginTimerCheck", pluginTimerCheck);
 		Money_Plugin = config.getString("PluginSupport.MoneyPlugin", "none");
 		if(Money_Plugin.equalsIgnoreCase("iConomy"))
 			this.useiConomy = true;

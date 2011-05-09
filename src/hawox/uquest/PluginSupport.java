@@ -19,7 +19,9 @@ public class PluginSupport{
 	
 	public PluginSupport(UQuest plugin) {
 		this.plugin = plugin;
-		
+	}
+	
+	public void link(){	
         if(UQuest.getiConomy() == null) {
             Plugin iConomy = UQuest.getBukkitServer().getPluginManager().getPlugin("iConomy");
 
