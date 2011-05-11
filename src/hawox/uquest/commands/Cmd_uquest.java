@@ -30,8 +30,14 @@ public class Cmd_uquest implements CommandExecutor{
 		//This is now a permissions communication check as well as an update notice.
 		try{
 			if(plugin.isUsePermissions() == true){
+				try{
 				if(UQuest.getPermissions().has(player, "uQuest.CanQuest")){
 					//System.err.println(plugin.pluginNameBracket() + " The node 'uQuest.CanQuest' is no longer used. Update this!");
+				}
+				}catch(NullPointerException npe){
+					plugin.setUsePermissions(false);
+					System.err.println(UQuest.pluginNameBracket() + " Permissions is returning null. Disabling it.");
+					System.err.println(UQuest.pluginNameBracket() + " If this is incorect read your uQuest config file and fix it.");
 				}
 			}
 		}catch(NoClassDefFoundError ncdfe){

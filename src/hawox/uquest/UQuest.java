@@ -144,7 +144,6 @@ public class UQuest extends JavaPlugin {
 			getCommand("uquest").setExecutor(cmd_uquest);
 			getCommand("quest").setExecutor(cmd_uquest);
 			getCommand("q").setExecutor(cmd_uquest);
-			//getCommand("test").setExecutor(new Cmd_test(this));
 		}
 		
 		//These commands exist even if they are not using the default uQuest

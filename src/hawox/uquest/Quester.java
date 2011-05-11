@@ -119,11 +119,18 @@ public class Quester implements Serializable{
 		try{
 			return this.questTracker.get(which);
 		}catch(NullPointerException npe){
+			
 			System.err.println(UQuest.pluginNameBracket() + " Quester:getTracker: Players tracker does not match their quest!");
 			System.err.println(UQuest.pluginNameBracket() + " This is most likely due to editing a quest a players has.");
 			System.err.println(UQuest.pluginNameBracket() + " Dropping their quest and giving it back to them to fix it.");
 			this.giveQuest(plugin,this.questID, plugin.getQuestersQuest(this));
 			return getTracker(plugin, which); //try again.
+			
+			/*
+			 * This is causing errors with an auto complete plugin.
+			 * The next tracker can run so fast that it will fire a few times before the quest can finish... well finishing itself.
+			 * So it tries to get the tracker
+			 */
 		}
 	}
 	

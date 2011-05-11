@@ -131,6 +131,31 @@ public class LoadedQuest {
 	public void finish(UQuest plugin, Player player, boolean showText){
 		Quester quester = plugin.getQuestInteraction().getQuester(player);
 		int id = quester.getQuestID(); //For the event to know which quest id the player had
+		
+		//set them to having no active quest
+		quester.setQuestID(-1);
+		//set them to having no quest progress thingy stored
+		quester.clearTracker();
+		
+		//Increase player's finished quests meter thing
+		if(showText == true)
+			player.sendMessage(ChatColor.WHITE + "   *Your total completed quests has increased by 1!");
+		quester.setQuestsCompleted(quester.getQuestsCompleted() + 1);
+		
+		//Consume the number of items used
+		for(Objective objective : this.objectives)
+			objective.done(player);
+		
+		//Reward Stuff
+		for(Reward reward : this.rewards)
+			reward.giveReward(plugin, player);
+
+		//save them to file
+		if(!(plugin.isUseSQLite()))
+			plugin.saveQuesterToFile(quester);
+		
+		if(plugin.isUseSQLite())
+			plugin.getDB().put(player.getName(), quester);
 
 		//finish info
 		if(showText == true){
@@ -139,31 +164,6 @@ public class LoadedQuest {
 			player.sendMessage(ChatColor.GREEN + this.finishInfo);
 		}
 		
-		//Consume the number of items used
-		for(Objective objective : this.objectives)
-			objective.done(player);
-		
-		//Increase player's finished quests meter thing
-		if(showText == true)
-			player.sendMessage(ChatColor.WHITE + "   *Your total completed quests has increased by 1!");
-
-		quester.setQuestsCompleted(quester.getQuestsCompleted() + 1);
-		
-		//Reward Stuff
-		for(Reward reward : this.rewards)
-			reward.giveReward(plugin, player);
-				
-		//set them to having no active quest
-		quester.setQuestID(-1);
-		//set them to having no quest progress thingy stored
-		quester.clearTracker();
-		//save them to file
-		if(!(plugin.isUseSQLite()))
-			plugin.saveQuesterToFile(quester);
-		
-		if(plugin.isUseSQLite())
-			plugin.getDB().put(player.getName(), quester);
-
 		//call event
 		plugin.getServer().getPluginManager().callEvent(new QuestFinishEvent(plugin.getServer().getPlayer(quester.getTheQuestersName()), quester, id));
 	}
